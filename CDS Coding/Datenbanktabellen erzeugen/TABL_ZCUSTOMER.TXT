@@ -1,0 +1,11 @@
+@EndUserText.label : 'Customer'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #ALLOWED
+define table zcustomer {
+  key client   : abap.clnt not null;
+  key customer : kunnr not null;
+  name         : name1_gp;
+
+}

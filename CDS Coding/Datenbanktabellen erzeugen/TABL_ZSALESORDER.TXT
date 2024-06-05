@@ -1,0 +1,26 @@
+@EndUserText.label : 'Sales Order'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_CHARACTER_NUMERIC
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #ALLOWED
+define table zsalesorder {
+  key client           : abap.clnt not null;
+  key salesorder       : vbeln not null;
+  salesordertype       : auart;
+  soldtoparty          : kunag;
+  salesorganization    : vkorg;
+  distributionchannel  : vtweg;
+  organizationdivision : spart;
+  @Semantics.amount.currencyCode : 'zsalesorder.transactioncurrency'
+  netamount            : netwr_ap;
+  transactioncurrency  : waerk;
+  deliverystatus       : lfstk;
+  deletionindicator    : loekz;
+  @AbapCatalog.anonymizedWhenDelivered : false
+  createdbyuser        : ernam;
+  creationdatetime     : creation_date_time;
+  @AbapCatalog.anonymizedWhenDelivered : false
+  lastchangedbyuser    : aename;
+  lastchangedatetime   : last_changed_date_time;
+
+}

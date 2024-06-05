@@ -1,0 +1,24 @@
+@EndUserText.label : 'Sales Order Schedule Line'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #ALLOWED
+define table zsalesordersline {
+
+  key client                 : abap.clnt not null;
+  key salesorder             : vbeln not null;
+  key salesorderitem         : posnr not null;
+  key salesorderscheduleline : etenr not null;
+  @Semantics.quantity.unitOfMeasure : 'zsalesordersline.orderquantityunit'
+  orderquantity              : wmeng;
+  orderquantityunit          : vrkme;
+  deliverydate               : edatu;
+  salesorderschedulelinetype : abap.char(1);
+  @AbapCatalog.anonymizedWhenDelivered : false
+  createdbyuser              : ernam;
+  creationdatetime           : creation_date_time;
+  @AbapCatalog.anonymizedWhenDelivered : false
+  lastchangedbyuser          : aename;
+  lastchangedatetime         : last_changed_date_time;
+
+}

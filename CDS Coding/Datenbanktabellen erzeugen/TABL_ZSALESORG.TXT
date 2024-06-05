@@ -1,0 +1,10 @@
+@EndUserText.label : 'Sales Organization'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #ALLOWED
+define table zsalesorg {
+  key client            : abap.clnt not null;
+  key salesorganization : vkorg not null;
+
+}
