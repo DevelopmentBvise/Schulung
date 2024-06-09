@@ -1,0 +1,18 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Union View as Data Source A'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_UnionViewAsDataSourceA 
+  as select distinct from t000 
+{
+  key 'A' as Field1
+}
+union all select distinct from t100 {
+  key 'B' as Field1
+}
+//union all select distinct from t100 {
+//  key 'C' as Field1
+//}
+//union all select distinct from t100 {
+//  key 'D' as Field1
+//}

@@ -1,0 +1,14 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Optional Parameters'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithOptionalParameters 
+  with parameters
+    @Environment.systemField: #SYSTEM_DATE
+    P_KeyDate : abap.dats
+  as select distinct from Z_ViewWithParametersDataSource
+{
+  key KeyField
+}
+where
+      ValidityEndDate   >= $parameters.P_KeyDate
+  and ValidityStartDate <= $parameters.P_KeyDate

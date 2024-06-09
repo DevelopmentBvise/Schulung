@@ -1,0 +1,7 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Select Distinct'
+define view entity Z_ViewWithSelectDistinct 
+ as select distinct from t000
+{
+  key abap.char'A' as Field1
+}

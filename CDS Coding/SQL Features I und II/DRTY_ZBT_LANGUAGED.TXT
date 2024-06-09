@@ -1,0 +1,3 @@
+@EndUserText.label: 'Language Type D'
+@ObjectModel.sapObjectNodeTypeReference: 'Language'
+define type ZBT_LanguageD : ZBT_LanguageC;

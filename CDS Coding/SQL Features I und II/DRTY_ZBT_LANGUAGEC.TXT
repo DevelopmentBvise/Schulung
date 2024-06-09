@@ -1,0 +1,3 @@
+@EndUserText.label: 'Language Type C'
+@Semantics.language: true
+define type ZBT_LanguageC : ZBT_LanguageB;

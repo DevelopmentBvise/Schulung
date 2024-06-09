@@ -1,0 +1,417 @@
+@AbapCatalog.sqlViewName: 'ZCSHIPSTAT1'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Transportion Order Overview'
+@VDM.viewType: #CONSUMPTION
+@Analytics: { query: true } 
+
+define view ZC_SHIPPINGSSTAT1 
+  as select from ZI_TranspOverviewExt
+{
+  key TransportationOrderUUID,
+      @AnalyticsDetails.query.axis : #ROWS
+  key SalesDocument as SalesOrder,
+  key DeliveryDocument,
+      //Pre-Filter
+      @EndUserText: { label: 'Versandart', quickInfo: 'Versandart' }
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true },
+                      derivation: { lookupEntity: 'I_TransportationOrderType',
+                                    resultElement: 'TransportationOrderType',
+                                    binding: [ { targetElement: 'TransportationOrderType', type: #CONSTANT, value: 'ZFS9' },
+                                               { targetElement: 'TransportationOrderType', type: #CONSTANT, value: 'ZB02' } ] } }
+      @AnalyticsDetails.query.axis : #ROWS
+      TransportationOrderType,
+      @Consumption: {filter: {selectionType: #INTERVAL},
+                     derivation: {lookupEntity: 'I_LastMonthDate',
+                                  resultElement: 'LastMonthStartDateTime', resultElementHigh: 'ABAPMaximumDateTime', binding: [{targetElement: 'CalendarDate',
+                                           type: #SYSTEM_FIELD, value: '#SYSTEM_DATE'}]}}
+      @AnalyticsDetails.query.axis : #ROWS
+      @EndUserText: { label: 'Abhol-, Rechnungs-, Dispodatum', quickInfo: 'Abhol-, Rechnungs-, Dispodatum' }
+      @ObjectModel.foreignKey.association: '_TransportationOrderStop'
+      TranspOrdStopPlanTranspDteTme,
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      @ObjectModel.foreignKey.association: '_Plant'
+      Plant,
+      @AnalyticsDetails.query.axis : #ROWS
+      @EndUserText: { label: 'Versandstelle', quickInfo: 'Versandstelle' }
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      Shipper,
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true, defaultValue: '0001' } }
+      @ObjectModel.foreignKey.association: '_SalesOrganization'
+      SalesOrganization,
+      @EndUserText: { label: 'Warenempfänger aus Kundenauftrag', quickInfo: 'Warenempfänger aus Kundenauftrag' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      SoldToParty,
+      @EndUserText: { label: 'Warenempänger PLZ', quickInfo: 'Warenempänger PLZ' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      @ObjectModel.foreignKey.association: '_TOR_PLZ_VH'
+      PostalCode,
+      @EndUserText: { label: 'Warenempänger Land', quickInfo: 'Warenempänger Land' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      @ObjectModel.foreignKey.association: '_Country'
+      Country,
+      @EndUserText: { label: 'Quellhafen', quickInfo: 'Quellhafen' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      @ObjectModel.foreignKey.association: '_SourceLocationVH'
+      SourceLocationId,
+      @EndUserText: { label: 'Zielhafen', quickInfo: 'Zielhafen' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      @ObjectModel.foreignKey.association: '_TargetLocationVH'
+      TargetLocationId,
+      //Output
+      @AnalyticsDetails.query.axis : #ROWS
+      TransportationOrder as FreightOrder,
+      @AnalyticsDetails.query.axis : #ROWS
+      Carrier,
+      @AnalyticsDetails.query.axis : #ROWS
+      BusinessPartnerName,
+      @AnalyticsDetails.query.axis : #ROWS
+      TuresTco,
+      @AnalyticsDetails.query.axis : #ROWS
+      @EndUserText: { label: 'Container Nr.', quickInfo: 'Container Nr.' }
+      PlateNumber,
+      @AnalyticsDetails.query.axis : #ROWS
+      PersonnelCountry,
+      @AnalyticsDetails.query.axis : #ROWS
+      Personnel,
+      @AnalyticsDetails.query.axis : #ROWS
+      PersonnelFULLNAME,
+      @AnalyticsDetails.query.axis : #ROWS
+      SalesDocCreatedByUser,
+      @AnalyticsDetails.query.axis : #ROWS
+      IncotermsClassification,
+      //Attributes
+      BillingDoc,
+      BillingDocumentCategory,
+      BillingDocumentType,
+      BillingDocCreatedByUser,
+      BillingDocCreationDate,
+      BillingDocCreationTime,
+      BillingDocLastChangeDate,
+      @EndUserText: { label: 'Gesamtbetrag', quickInfo: 'Gesamtbetrag' }
+      @Semantics.amount.currencyCode: '_TranspChargeObject.TranspChargeDocumentCurrency'
+      TranspChrgTotalAmtInDocCrcy,
+      @ObjectModel.foreignKey.association: '_TranspChargeLocalCurrency'
+      @Semantics.currencyCode:true 
+      TranspChargeLocalCurrency,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.amount.currencyCode: 'TransactionCurrency'
+      TotalNetAmount,
+      @Semantics.currencyCode: true
+      @ObjectModel.foreignKey.association: '_TransactionCurrency'
+      TransactionCurrency,
+      @AnalyticsDetails.query.hidden: true
+      LastChangeDateTime,
+      LogicalSystem,
+      DistributionChannel,
+      Division,
+      BillingDocBillingDocumentDate,
+      BillingDocumentIsCancelled,
+      CancelledBillingDocument,
+      BillingDocCombinationCriteria,
+      ManualInvoiceMaintIsRelevant,
+      NmbrOfPages,
+      IsIntrastatReportingRelevant,
+      IsIntrastatReportingExcluded,
+      BillingDocumentIsTemporary,
+      CustomerTaxClassification1,
+      CustomerTaxClassification2,
+      CustomerTaxClassification3,
+      CustomerTaxClassification4,
+      CustomerTaxClassification5,
+      CustomerTaxClassification6,
+      CustomerTaxClassification7,
+      CustomerTaxClassification8,
+      CustomerTaxClassification9,
+      IsEUTriangularDeal,
+      SDPricingProcedure,
+      IncotermsVersion,
+      BDocIncotermsTransferLocation,
+      IncotermsLocation1,
+      IncotermsLocation2,
+      PayerParty,
+      ContractAccount,
+      CustomerPaymentTerms,
+      PaymentMethod,
+      PaymentReference,
+      FixedValueDate,
+      AdditionalValueDays,
+      SEPAMandate,
+      CompanyCode,
+      FiscalYear,
+      AccountingDocument,
+      FiscalPeriod,
+      CustomerAccountAssignmentGroup,
+      AccountingExchangeRateIsSet,
+      @AnalyticsDetails.query.hidden: true
+      AccountingExchangeRate,
+      ExchangeRateDate,
+      ExchangeRateType,
+      DocumentReferenceID,
+      AssignmentReference,
+      DunningArea,
+      DunningBlockingReason,
+      DunningKey,
+      BDocInternalFinancialDocument,
+      IsRelevantForAccrual,
+      PartnerCompany,
+      PurchaseOrderByCustomer,
+      BillingDocumentCountry,
+      CityCode,
+      Region,
+      County,
+      CreditControlArea,
+      CustomerRebateAgreement,
+      BillingDocPricingDocument,
+      OverallBillingStatus,
+      AccountingPostingStatus,
+      AccountingTransferStatus,
+      BillingIssueType,
+      InvoiceListStatus,
+      OverallPricingIncompletionSts,
+      InvoiceClearingStatus,
+      InvoiceListType,
+      InvoiceListBillingDate,
+      TranspOrdItemVessel,
+      SalesDocumentType,
+      PersonnelGP,
+      BillingDocument,
+      DeliveryDoc,
+      SDDocumentCategory,
+      DeliveryDocumentType,
+      DeliveryDocumentCreatedByUser,
+      CreationDate,
+      CreationTime,
+      DeliveryDocLastChangedByUser,
+      LastChangeDate,
+      ShippingPoint,
+      SalesOffice,
+      CompleteDeliveryIsDefined,
+      OrderCombinationIsAllowed,
+      DeliveryPriority,
+      DeliveryBlockReason,
+      Supplier,
+      DeliveryDocumentBySupplier,
+      DeliveryIsInPlant,
+      ReceivingPlant,
+      Warehouse,
+      IsExportDelivery,
+      OrderID,
+      @AnalyticsDetails.query.hidden: true
+      PacksTranspOrdItemQuantity,
+      PacksTranspOrdItemQuantityUnit,
+      @AnalyticsDetails.query.hidden: true
+      HeaderGrossWeight,
+      @AnalyticsDetails.query.hidden: true
+      HeaderNetWeight,
+      HeaderWeightUnit,
+      @AnalyticsDetails.query.hidden: true
+      HeaderVolume,
+      HeaderVolumeUnit,
+      IsDeliveryForSingleWarehouse,
+      GoodsIssueOrReceiptSlipNumber,
+      WarehouseGate,
+      WarehouseStagingArea,
+      MeansOfTransportRefMaterial,
+      SpecialProcessingCode,
+      ExternalIdentificationType,
+      DeliveryVersion,
+      PickedItemsLocation,
+      DocumentDate,
+      PickingDate,
+      PickingTime,
+      TotalNumberOfPackage,
+      LoadingPoint,
+      LoadingDate,
+      LoadingTime,
+      BillOfLading,
+      HandlingUnitInStock,
+      ShipToParty,
+      ShippingType,
+      DeliveryDate,
+      DeliveryTime,
+      ShippingCondition,
+      ShipmentBlockReason,
+      TransportationPlanningDate,
+      TransportationPlanningTime,
+      ProposedDeliveryRoute,
+      ActualDeliveryRoute,
+      RouteSchedule,
+      PlannedGoodsIssueDate,
+      GoodsIssueTime,
+      ActualGoodsMovementDate,
+      ActualGoodsMovementTime,
+      IncotermsTransferLocation,
+      ExternalTransportSystem,
+      TransportationGroup,
+      DeliveryDocMeansOfTransport,
+      MeansOfTransportType,
+      UnloadingPointName,
+      ProofOfDeliveryDate,
+      ConfirmationTime,
+      FactoryCalendarByCustomer,
+      ShippingLocationTimeZone,
+      ReceivingLocationTimeZone,
+      IntercompanyBillingDate,
+      BillingDocumentDate,
+      HeaderBillingBlockReason,
+      InternalFinancialDocument,
+      PaymentGuaranteeProcedure,
+      @AnalyticsDetails.query.hidden: true
+      DepreciationPercentage,
+      NextShippingDate,
+      CustomerCreditAccount,
+      CentralCreditChkTechErrSts,
+      @AnalyticsDetails.query.hidden: true
+      ReleasedCreditAmount,
+      ControllingAreaCurrency,
+      CreditBlockReleaseDate,
+      CustomerGroup,
+      SalesDistrict,
+      OverallIntcoBillingStatus,
+      OverallSDProcessStatus,
+      TotalBlockStatus,
+      OverallDelivConfStatus,
+      TransportationPlanningStatus,
+      OverallPickingConfStatus,
+      OverallPickingStatus,
+      OverallPackingStatus,
+      OverallWarehouseActivityStatus,
+      DistrStatusByDecentralizedWrhs,
+      OverallGoodsMovementStatus,
+      OverallDelivReltdBillgStatus,
+      OverallProofOfDeliveryStatus,
+      HdrGeneralIncompletionStatus,
+      HeaderDelivIncompletionStatus,
+      HeaderPickgIncompletionStatus,
+      HeaderPackingIncompletionSts,
+      HdrGoodsMvtIncompletionStatus,
+      HeaderBillgIncompletionStatus,
+      OvrlItmGeneralIncompletionSts,
+      OvrlItmPackingIncompletionSts,
+      OvrlItmPickingIncompletionSts,
+      OvrlItmDelivIncompletionSts,
+      OvrlItmGdsMvtIncompletionSts,
+      TotalCreditCheckStatus,
+      FinDocCreditCheckStatus,
+      PaytAuthsnCreditCheckSts,
+      CentralCreditCheckStatus,
+      ExprtInsurCreditCheckStatus,
+      MaxDocValueCreditCheckStatus,
+      PaymentTermCreditCheckStatus,
+      ShippingGroupNumber,
+      PricingDocument,
+      SalesOrgForIntcoBilling,
+      DistrChnlForIntcoBilling,
+      DivisionForIntcoBilling,
+      IntercompanyBillingType,
+      FactoryCalendarForIntcoBilling,
+      IntercompanyBillingCustomer,
+      DeliveryDocumentCondition,
+      ReferenceDocumentNumber,
+      DeletionIndicator,
+      OverallChmlCmplncStatus,
+      OverallDangerousGoodsStatus,
+      OverallSafetyDataSheetStatus,
+      IsCorrectionDelivery,
+      ReadyForWarehouseExecStatus,
+      DelivAdvncdShipgRcvgRlvnce,
+      EU_DeliveryARCStatus,
+      TransportationOrderCategory,
+      DangerousGoodsAreContained,
+      TransportationServiceLevel,
+      TranspOrdResponsiblePerson,
+      TranspOrdPartnerReference,
+      MasterBillOfLading,
+      TranspOrdPlanningBlock,
+      TranspOrdExecutionIsBlocked,
+      InvoicingIsBlocked,
+      CarrierUUID,
+      StandardCarrierAlphaCode,
+      TranspOrdAirlineIATACode,
+      TranspOrdAirWayBill,
+      CarrierAddressID,
+      CarrierOriginOfEntry,
+      ShipperUUID,
+      ShipperAddressID,
+      ConsigneeUUID,
+      Consignee,
+      ConsigneeAddressID,
+      TranspOrdShippingType,
+      MovementType,
+      TranspOrdTrafficDirection,
+      PlngAndExecOrganization,
+      PlngAndExecGroup,
+      PurchasingOrganization,
+      PurchasingOrgExternalID,
+      PurchasingGroup,
+      PurchasingGroupExternalID,
+      PurgOrgCompanyCode,
+      TranspOrdLifeCycleStatus,
+      TranspOrdPlanningStatus,
+      TransportationOrderExecSts,
+      MeansOfTransport,
+      TransportationMode,
+      TransportationModeCategory,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdMaxUtilznRatio,
+      TransportationRequestCategory,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdMaxUtilznMassRatio,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdMaxUtilznVolumeRatio,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdMaxUtilznLengthRatio,
+      TranspOrdGrossWeight,
+      TranspOrdGrossWeightUnit,
+      TranspOrdGrossVolume,
+      TranspOrdGrossVolumeUnit,
+      TranspOrdNetWeight,
+      TranspOrdNetWeightUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdQuantity,
+      TranspOrdQuantityUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdAlternativeQty,
+      TranspOrdAlternativeQtyUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdBaseQuantity,
+      TranspOrdBaseQuantityUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdTareWeight,
+      TranspOrdTareWeightUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdNumberOfCtns,
+      TranspOrdNumberOfCtnsUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdDngrsGdsExmpPts,
+      TranspOrdDngrsGdsExmpPtsUnit,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdDistance,
+      TranspOrdDistanceUnit,
+      TranspOrdNetDuration,
+      TranspOrdNetDurationUnit,
+      LastChangedByUser,
+      @AnalyticsDetails.query.hidden: true
+      ChangedDateTime,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdLfcycStsChgDteTime,
+      @AnalyticsDetails.query.hidden: true
+      TranspOrdOrderDateTime,
+      BusinessTransactionDocument,
+      BusinessTransactionDocType,
+      Entrepreneur,
+      LoadPlanStatus,
+      CustomsStatus,
+      SubcontractingStatus,
+      Fixation,
+      Preloading
+}

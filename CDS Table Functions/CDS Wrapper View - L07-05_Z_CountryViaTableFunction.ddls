@@ -1,0 +1,26 @@
+@EndUserText.label: 'Country (via Table Function)'
+@Analytics.dataCategory: #DIMENSION
+@ObjectModel.representativeKey: 'Country'
+
+define view entity Z_CountryViaTableFunction
+  as select from Z_TableFunctionCountry 
+                  ( P_SAPClient : $session.client )
+  association [0..*] to I_CountryText as _Text 
+    on $projection.Country = _Text.Country
+  association [0..1] to I_Currency    as _CountryCurrency 
+    on $projection.CountryCurrency = 
+                               _CountryCurrency.Currency
+{
+  key Country,
+      CountryThreeLetterISOCode,
+      CountryThreeDigitISOCode,
+      CountryISOCode,
+      @ObjectModel.foreignKey.association: 
+                                      '_CountryCurrency'
+      CountryCurrency,
+      IndexBasedCurrency,
+      HardCurrency,
+      TaxCalculationProcedure,
+      _Text,
+      _CountryCurrency
+}

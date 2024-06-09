@@ -1,0 +1,10 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Buffer'
+@Metadata.ignorePropagatedAnnotations: true
+@AbapCatalog.entityBuffer.definitionAllowed: true
+define view entity Z_ViewWithBufferA as select from t000
+{
+  key mandt as KeyField,
+      mtext as Field
+}

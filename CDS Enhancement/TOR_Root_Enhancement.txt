@@ -1,0 +1,11 @@
+@AbapCatalog.sqlViewAppendName: 'ZEXTTRANSORD'
+@EndUserText.label: 'Wieland Transportation Order Extension'
+extend view I_TransportationOrder with ZE_TRANSPORTATIONORDER
+{
+    root.zz_unternehmer as Entrepreneur,
+    root.load_plan_status as LoadPlanStatus,
+    root.customs as CustomsStatus,
+    root.subcontracting as SubcontractingStatus,
+    root.fixation as Fixation,
+    root.zz_vorladung as Preloading
+}

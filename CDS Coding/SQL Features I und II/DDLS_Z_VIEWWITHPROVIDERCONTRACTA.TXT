@@ -1,0 +1,8 @@
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'View with Provider Contract'
+@Metadata.ignorePropagatedAnnotations: true
+define root view entity Z_ViewWithProviderContractA 
+  as select distinct from t000
+{
+  key abap.char'A' as KeyField
+}

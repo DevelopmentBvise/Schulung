@@ -1,0 +1,14 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Union View with Duplicates'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_UnionViewWithDuplicates
+  as select from Z_ViewAsDataSourceA
+{
+  FieldA1
+}
+union all select from Z_ViewAsDataSourceA
+{
+  FieldA1
+}
+
+

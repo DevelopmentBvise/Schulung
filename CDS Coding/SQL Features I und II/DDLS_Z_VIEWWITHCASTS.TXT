@@ -1,0 +1,19 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Casts'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithCasts
+  as select distinct from t000
+{
+  t000.logsys                                                 as ProjectedField,
+  '20170809'                                                  as CharacterField,
+  abap.char'20170809'                                         as CharacterField2,
+  abap.dats'20170809'                                         as DateField,
+  cast ( '20170809' as abap.dats )                            as DateField2,
+  cast ( '20170809' as datum )                                as DateField3,
+  cast ( abap.dats'20170809' as datum preserving type )       as DateField4,
+  cast ( cast ( 'E' as abap.lang ) as spras preserving type ) as LanguageField,
+  cast ( abap.lang'E' as spras preserving type )              as LanguageField2,
+  cast ( abap.lang'E' as ZBT_LANGUAGED preserving type )      as LanguageField3,
+  1.2                                                         as FloatingPointField,
+  fltp_to_dec( 1.2 as abap.dec(4,2) )                         as DecimalField
+}

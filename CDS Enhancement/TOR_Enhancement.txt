@@ -1,0 +1,10 @@
+@AbapCatalog.sqlViewAppendName: 'ZEXTTRANSORDITM'
+@EndUserText.label: 'Wieland Transportation Order Item'
+extend view I_TransportationOrderItem with ZE_TransportationOrderItem 
+{
+    item.platenumber as PlateNumber,
+    item.orig_btd_tco as TranspOrdDocOrigRefType,
+    item.orig_btd_id as TranspOrdDocOrigRefID,
+    item.tures_tco as TuresTco,
+    item.trq_id as TrqID
+}

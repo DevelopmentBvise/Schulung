@@ -1,0 +1,3 @@
+define view entity buffer on Z_ViewWithBufferA
+  layer customer
+  type none

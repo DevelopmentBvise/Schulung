@@ -1,0 +1,8 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View acting as Data Source'
+define view entity Z_ViewAsDataSourceC
+  as select distinct from t000
+{
+  key cast( 'C' as abap.char(2) )  as FieldC1,
+      cast( 'C2' as abap.char(2) ) as FieldC2
+}

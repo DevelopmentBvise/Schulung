@@ -1,0 +1,17 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Typed Literals'
+define view entity Z_ViewWithTypedLiterals
+  as select distinct from t000
+{
+  '  Char10  '                                   as CharacterValue,
+  cast( '  Char10  ' as abap.char(10) )          as CastCharacterValue,
+  abap.char'  Char10  '                          as TypedCharacterValue,
+  cast( abap.char'  Char10  ' as char10 preserving type ) as CastTypedCharacterValue,
+
+  1234.56                                       as FloatingPointValue,
+  abap.fltp'1234.56'                            as TypedFloatingPointValue,
+
+  fltp_to_dec(1234.56 as abap.dec(6,2))         as ConvertedDecimalValue,
+  abap.dec'1234.56'                             as TypedDecimalValue,
+  abap.dec'001234.5600'                         as TypedDecimalValue2
+}

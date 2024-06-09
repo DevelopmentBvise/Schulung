@@ -1,0 +1,16 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Parameters Association Target'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithParametersAscTarget 
+  with parameters
+    P_ValidityDate : abap.dats
+  as select from Z_ViewWithParametersDataSource
+{
+  key KeyField,
+  key Language,
+      ValidityEndDate,
+      ValidityStartDate
+}
+where
+      ValidityEndDate   >= $parameters.P_ValidityDate
+  and ValidityStartDate <= $parameters.P_ValidityDate

@@ -1,0 +1,24 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Parameters'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithParameters 
+  with parameters
+    P_KeyDate  : abap.dats,
+    P_Language : sylangu
+  as select from Z_ViewWithParametersDataSource
+  association [0..*] to Z_ViewWithParametersAscTarget as _Target         on  $projection.KeyField = _Target.KeyField 
+  association [0..1] to Z_ViewWithParametersAscTarget as _FilteredTarget on  $projection.KeyField = _FilteredTarget.KeyField
+                                                                       and $projection.Language = _FilteredTarget.Language
+                                                                        or _FilteredTarget.Language = $parameters.P_Language
+{
+  key KeyField,
+      ValidityEndDate,
+      ValidityStartDate,
+      $parameters.P_Language                                                           as Language,
+      _Target(P_ValidityDate: $parameters.P_KeyDate)[1:Language= $parameters.P_Language].KeyField as TargetKeyField,
+      _FilteredTarget
+}
+where
+      ValidityEndDate   >= $parameters.P_KeyDate
+  and ValidityStartDate <= $parameters.P_KeyDate
+  and Language          =  $parameters.P_Language

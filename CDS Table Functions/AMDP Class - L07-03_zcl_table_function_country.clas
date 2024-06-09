@@ -1,0 +1,35 @@
+CLASS ZCL_TABLE_FUNCTION_COUNTRY DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+PUBLIC SECTION.
+    INTERFACES if_amdp_marker_hdb.
+    CLASS-METHODS get_countries
+        FOR TABLE FUNCTION  Z_TableFunctionCountry.
+PROTECTED SECTION.
+PRIVATE SECTION.
+ENDCLASS.
+
+CLASS ZCL_TABLE_FUNCTION_COUNTRY IMPLEMENTATION.
+  METHOD get_countries
+      BY DATABASE FUNCTION FOR HDB
+           LANGUAGE SQLSCRIPT
+           OPTIONS READ-ONLY
+           USING I_Country.
+    RETURN
+      SELECT
+        :P_SAPClient as mandt,
+        Country,
+        CountryThreeLetterISOCode,
+        CountryThreeDigitISOCode,
+        CountryISOCode,
+        CountryCurrency,
+        IndexBasedCurrency,
+        HardCurrency,
+        TaxCalculationProcedure
+      FROM
+        I_Country
+      WHERE
+        mandt = :P_SAPClient;
+  ENDMETHOD.
+ENDCLASS.

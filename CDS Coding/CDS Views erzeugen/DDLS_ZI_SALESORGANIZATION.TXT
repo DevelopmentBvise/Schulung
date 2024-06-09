@@ -1,0 +1,8 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Sales Organization'
+@AbapCatalog.entityBuffer.definitionAllowed: true
+define view entity ZI_SalesOrganization
+  as select from zsalesorg
+{
+  key salesorganization as SalesOrganization
+}

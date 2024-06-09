@@ -1,0 +1,1 @@
+define type ZBT_LanguageA : abap.lang;

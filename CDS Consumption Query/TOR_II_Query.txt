@@ -1,0 +1,210 @@
+@AbapCatalog.sqlViewName: 'ZCTRORD'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Transportion Order Overview'
+@VDM.viewType: #CONSUMPTION
+@Analytics: { query: true }
+
+define view ZC_TransportationOrder
+  as select from ZI_TransportationOrder 
+  {
+  key TransportationOrderUUID,
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: {filter: {selectionType: #INTERVAL, multipleSelections: true}}
+      @EndUserText: { label: 'Frachtauftragsnummer',
+                      quickInfo: 'Frachtauftragsnummer' }  
+      TransportationOrder as FreightOrder,
+      @AnalyticsDetails.query.axis : #ROWS
+      TransportationOrderCategory,
+      @EndUserText: { label: 'Frachtauftragsart',
+                      quickInfo: 'Frachtauftragsart' }
+      @ObjectModel.foreignKey.association: '_TransportationOrderType'
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption: {filter: {selectionType: #INTERVAL, multipleSelections: true}}
+      TransportationOrderType,
+      DangerousGoodsAreContained,
+      TransportationServiceLevel,
+      TranspOrdResponsiblePerson,
+      TranspOrdPartnerReference,
+      MasterBillOfLading,
+      @ObjectModel.foreignKey.association: '_TranspOrdPlanningBlock'
+      TranspOrdPlanningBlock,
+      @ObjectModel.foreignKey.association: '_TranspOrdExecutionIsBlocked'
+      TranspOrdExecutionIsBlocked,
+      @ObjectModel.foreignKey.association: '_InvoicingIsBlocked'
+      InvoicingIsBlocked,
+      CarrierUUID,
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      @ObjectModel.foreignKey.association: '_Carrier'
+      @AnalyticsDetails.query.axis : #ROWS
+      Carrier,
+      @AnalyticsDetails.query.axis : #ROWS
+      StandardCarrierAlphaCode,
+      TranspOrdAirlineIATACode,
+      TranspOrdAirWayBill,
+      CarrierAddressID,
+      @ObjectModel.foreignKey.association: '_CarrierOriginOfEntry'
+      CarrierOriginOfEntry,
+      ShipperUUID,
+      @ObjectModel.foreignKey.association: '_Shipper'
+      ZI_TransportationOrder.Shipper,
+      ShipperAddressID,
+      ConsigneeUUID,
+      @ObjectModel.foreignKey.association: '_Consignee'
+      Consignee, 
+      ConsigneeAddressID,
+      @ObjectModel.foreignKey.association: '_TranspOrdShippingType'
+      TranspOrdShippingType,
+      @ObjectModel.foreignKey.association: '_MovementType'
+      MovementType,
+      @ObjectModel.foreignKey.association: '_TranspOrdTrafficDirection'
+      TranspOrdTrafficDirection,
+      @ObjectModel.foreignKey.association: '_PlngAndExecOrganization'
+      PlngAndExecOrganization,
+      @ObjectModel.foreignKey.association: '_PlngAndExecGroup'
+      PlngAndExecGroup,
+      @ObjectModel.foreignKey.association: '_PurchasingOrganization'
+      PurchasingOrganization,
+      PurchasingOrgExternalID,
+      @ObjectModel.foreignKey.association: '_PurchasingGroup'
+      PurchasingGroup,
+      PurchasingGroupExternalID,
+      @ObjectModel.foreignKey.association: '_PurchasingCompanyCode'
+      @Consumption.valueHelpDefinition: [{ entity: {name: 'I_CompanyCodeVH' , element: 'CompanyCode'}}]
+      PurgOrgCompanyCode,
+      @Consumption: {filter: {selectionType: #SINGLE}}
+      @ObjectModel.foreignKey.association: '_TranspOrdLifeCycleStatus'
+      @AnalyticsDetails.query.axis : #ROWS
+      TranspOrdLifeCycleStatus,
+      @Consumption: {filter: {selectionType: #SINGLE}}
+      @ObjectModel.foreignKey.association: '_TranspOrdPlanningStatus'
+      TranspOrdPlanningStatus,
+      @ObjectModel.foreignKey.association: '_TransportationOrderExecSts'
+      @AnalyticsDetails.query.axis : #ROWS
+      TransportationOrderExecSts,
+      @ObjectModel.foreignKey.association: '_MeansOfTransport'
+      MeansOfTransport,
+      @ObjectModel.foreignKey.association: '_TransportationMode'
+      TransportationMode,
+      @ObjectModel.foreignKey.association: '_TransportationModeCategory'
+      TransportationModeCategory,
+      TransportationRequestCategory,
+      @DefaultAggregation: #SUM
+      @Semantics.quantity.unitOfMeasure: 'TranspOrdGrossWeightUnit'
+      TranspOrdGrossWeight,
+      @Semantics.unitOfMeasure: true
+      @ObjectModel.foreignKey.association: '_TranspOrdGrossWeightUnit'
+      TranspOrdGrossWeightUnit,
+      @DefaultAggregation: #SUM
+      @Semantics.quantity.unitOfMeasure: 'TranspOrdNetWeightUnit'
+      TranspOrdNetWeight,
+      @Semantics.unitOfMeasure: true
+      @ObjectModel.foreignKey.association: '_TranspOrdNetWeightUnit'
+      TranspOrdNetWeightUnit,
+      TranspOrdNetDuration,
+      @Semantics.unitOfMeasure: true
+      TranspOrdNetDurationUnit,
+      @Semantics.user.createdBy: true
+      @AnalyticsDetails.query.axis : #ROWS
+      CreatedByUser,
+      CreationDateTime,
+      @Semantics.user.lastChangedBy: true
+      @AnalyticsDetails.query.axis : #ROWS
+      LastChangedByUser,
+      ChangedDateTime,
+      TranspOrdLfcycStsChgDteTime,
+      TranspOrdOrderDateTime,
+      BusinessTransactionDocument,
+      BusinessTransactionDocType,
+      Entrepreneur,
+      @Consumption: {filter: {selectionType: #SINGLE}}
+      @AnalyticsDetails.query.axis : #ROWS
+      LoadPlanStatus,
+      @AnalyticsDetails.query.axis : #ROWS
+      CustomsStatus,
+      SubcontractingStatus,
+      @AnalyticsDetails.query.axis : #ROWS
+      Fixation,
+      @EndUserText: { label: 'Versandatum (TSTMP)',
+                      quickInfo: 'Versandatum (TSTMP)' }
+      @Consumption: {filter:     {selectionType: #INTERVAL},
+                                  derivation: {lookupEntity: 'I_LastMonthDate',
+                                               resultElement: 'LastMonthStartDateTime', 
+                                               resultElementHigh: 'ABAPMaximumDateTime',
+                                               binding: [{targetElement: 'CalendarDate', 
+                                                          type: #SYSTEM_FIELD, 
+                                                          value: '#SYSTEM_DATE'}]}} 
+      ShippingDate,
+      @EndUserText: { label: 'Versandatum (Datum)',
+                      quickInfo: 'Versandatum (Datum)' }
+                      
+      @Consumption: {filter: { selectionType: #INTERVAL,
+                               multipleSelections: false },
+                     derivation: { lookupEntity: 'I_LastMonthDate',
+                                   resultElement: 'LastMonthStartDate',
+                                   resultElementHigh: 'ABAPMaximumDate',
+                                   binding: [ { targetElement: 'CalendarDate',
+                                                type: #SYSTEM_FIELD,
+                                                value: '#SYSTEM_DATE' } ] } }
+                   
+      ShortShippingDate, 
+      @ObjectModel.foreignKey.association: '_ItemMeansOfTransport'
+      PackagingCarrier,
+      PlateNumber,
+      @EndUserText: { label: 'Geplanter Transporttermin (TSTMP)',
+                      quickInfo: 'Geplanter Transporttermin (TSTMP)' }
+                      
+      @Consumption: {filter:     {selectionType:     #INTERVAL},
+                                  derivation: {lookupEntity: 'I_LastMonthDate',
+                                               resultElement: 'LastMonthStartDateTime', 
+                                               resultElementHigh: 'ABAPMaximumDateTime',
+                                               binding: [{targetElement: 'CalendarDate', 
+                                                          type: #SYSTEM_FIELD, 
+                                                          value: '#SYSTEM_DATE'}]}} 
+      @AnalyticsDetails.query.axis : #ROWS
+      PlannedTransportDateTime,
+      @EndUserText: { label: 'Geplanter Transporttermin (Datum)',
+                      quickInfo: 'Geplanter Transporttermin (Datum)' }
+      @Consumption: {filter: { selectionType: #INTERVAL,
+                               multipleSelections: false },
+                     derivation: { lookupEntity: 'I_LastMonthDate',
+                                   resultElement: 'LastMonthStartDate',
+                                   resultElementHigh: 'ABAPMaximumDate',
+                                   binding: [ { targetElement: 'CalendarDate',
+                                                type: #SYSTEM_FIELD,
+                                                value: '#SYSTEM_DATE' } ] } }
+      PlannedTransportDate,
+      @EndUserText: { label: 'Startlokation',
+                      quickInfo: 'Startlokation' }
+      @AnalyticsDetails.query.axis : #ROWS
+      @Consumption.filter : { selectionType: #SINGLE, 
+                              multipleSelections: true, 
+                              mandatory: false }                    
+      SourceLocation,
+      @EndUserText: { label: 'Empfängerlokation',
+                      quickInfo: 'Empfängerlokation' }
+      DestinationLocation,
+      @EndUserText: { label: 'Empfänger-Land (Ziel)',
+                      quickInfo: 'Empfänger-Land (Ziel)' }
+      @Consumption.filter : { selectionType: #SINGLE, 
+                              multipleSelections: true, 
+                              mandatory: false,
+                              defaultValue: 'DE' }
+                        
+      DestinationCountry,
+      Preloading,
+      NumberOfStages,
+      NumberOfFreightUnits
+      //      @Semantics.amount.currencyCode: 'NetAmountLocalCurrency'
+      //      _TransportationCharge.TranspChrgTotalAmtInLoclCrcy                       as NetAmountLocal,
+      //      @ObjectModel.foreignKey.association: '_TranspChargeLocalCurrency'
+      //      @Semantics.currencyCode:true
+      //      _TransportationCharge.TranspChargeLocalCurrency                          as NetAmountLocalCurrency,
+      //      _TransportationCharge.TranspChargeCalculationDateTme                     as CalculationDateTime,
+}
+where
+  (
+       TransportationOrderCategory = 'TO'
+    or TransportationOrderCategory = 'BO'
+  )

@@ -3,16 +3,16 @@
 @AbapCatalog.tableCategory : #TRANSPARENT
 @AbapCatalog.deliveryClass : #A
 @AbapCatalog.dataMaintenance : #ALLOWED
-define table zsalesorderitem {
+define table zzsalesorderitem {
 
   key client          : abap.clnt not null;
   key salesorder      : vbeln not null;
   key salesorderitem  : posnr not null;
   product             : matnr;
-  @Semantics.quantity.unitOfMeasure : 'zsalesorderitem.orderquantityunit'
+  @Semantics.quantity.unitOfMeasure : 'zzsalesorderitem.orderquantityunit'
   orderquantity       : kwmeng;
   orderquantityunit   : vrkme;
-  @Semantics.amount.currencyCode : 'zsalesorderitem.transactioncurrency'
+  @Semantics.amount.currencyCode : 'zzsalesorderitem.transactioncurrency'
   netamount           : netwr_ap;
   transactioncurrency : waerk;
   creationdate        : erdat;
@@ -22,6 +22,5 @@ define table zsalesorderitem {
   @AbapCatalog.anonymizedWhenDelivered : false
   lastchangedbyuser   : aename;
   lastchangedatetime  : last_changed_date_time;
-  include zsalesorderitem_ext_include;
 
 }

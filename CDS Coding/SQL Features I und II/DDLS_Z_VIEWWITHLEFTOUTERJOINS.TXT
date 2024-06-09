@@ -1,0 +1,11 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Left-Outer-Joins'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithLeftOuterJoins 
+  as select from            Z_ViewAsDataSourceD
+    left outer one to many join Z_ViewAsDataSourceE on Z_ViewAsDataSourceD.FieldD2 = Z_ViewAsDataSourceE.FieldE1
+{
+  key Z_ViewAsDataSourceD.FieldD1,
+  key Z_ViewAsDataSourceD.FieldD2,
+  key Z_ViewAsDataSourceE.FieldE2
+}

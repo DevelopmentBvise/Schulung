@@ -1,0 +1,10 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Joins and Data Source Aliases'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithJoinsAndDataSrcAlias 
+  as select from           Z_ViewAsDataSourceD as D1
+    left outer exact one to exact one join Z_ViewAsDataSourceD as D2 on D1.FieldD1 = D2.FieldD1
+{
+  key D1.FieldD1,
+      D2.FieldD2
+}

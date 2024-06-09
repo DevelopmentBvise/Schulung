@@ -1,0 +1,629 @@
+@AbapCatalog.sqlViewName: 'ZCTRQQRY'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Query: FWO''s'
+
+@VDM.viewType: #CONSUMPTION
+@Analytics: { query: true }
+@Analytics.settings.zeroValues.hideOnAxis: #ROWS
+@Analytics.technicalName: 'ZC_TRQQ'
+
+define view ZC_TransportationReqQ
+  as select from ZI_TransReqCubeExt
+{
+  key DbKey,
+      /* Pre Selection */
+      @EndUserText.quickInfo: 'Speditionsauftrag'
+      @EndUserText.label: 'Speditionsauftrag'
+      @Consumption: {filter: {selectionType: #INTERVAL, multipleSelections: true } }
+      @AnalyticsDetails.query.axis: #ROWS
+      ForwardingOrder,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      TrqType,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      SrcLocId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      DesLocId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @EndUserText.label: 'Referenznummer des Käufers'
+      @EndUserText.quickInfo: 'Referenznummer des Käufers'
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      BaseBtdId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      CreatedBy,
+      @EndUserText: { label: 'Angelegt am (TSTMP)',
+                      quickInfo: 'Angelegt am (TSTMP)' }
+      @Consumption: {filter:     {selectionType: #INTERVAL},
+                                                                                                          derivation: {lookupEntity: 'I_LastMonthDate',
+                                                                                                                       resultElement: 'LastMonthStartDateTime',
+                                                                                                                       resultElementHigh: 'ABAPMaximumDateTime',
+                                                                                                                       binding: [{targetElement: 'CalendarDate',
+                                                          type: #SYSTEM_FIELD,
+                                                          value: '#SYSTEM_DATE'}]}}
+      CreatedOn,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      Lifecycle,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE } }
+      Planning,
+      @AnalyticsDetails.query.axis: #ROWS
+      @EndUserText.quickInfo: 'Frachtauftrag'
+      @EndUserText.label: 'Frachtauftrag'
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      TransportationOrder as FreightOrder,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      OrderPartyId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      ShipperId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      ConsigneeId,
+      /* Show */
+      @AnalyticsDetails.query.axis: #ROWS
+      ItemId,
+      @AnalyticsDetails.query.axis: #ROWS
+      @Consumption: { filter: { selectionType: #SINGLE, multipleSelections: true } }
+      ItemType,
+      @AnalyticsDetails.query.axis: #ROWS
+      ItemTypeDesc,
+      @AnalyticsDetails.query.axis: #ROWS
+      PackageTco,
+      @AnalyticsDetails.query.axis: #ROWS
+      PackageTcoDesc,
+      @AnalyticsDetails.query.axis: #ROWS
+      ZzLeg,
+      @AnalyticsDetails.query.axis: #ROWS
+      ZzLegDesc,
+      @AnalyticsDetails.query.axis: #ROWS
+      Carrier,
+      @AnalyticsDetails.query.axis: #ROWS
+      ItemDescr,
+      TspId,
+      ParentKey,
+      ItemParentKey,
+      ItemCat,
+      MainCargoItem,
+      SpAddressId,
+      ShipperKey,
+      CpAddressId,
+      ConsigneeKey,
+      @Semantics.quantity.unitOfMeasure: 'GroWeiUni'
+      GroWeiVal,
+      @ObjectModel.foreignKey.association: '_GroWeiUni'
+      GroWeiUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'GroVolUni'
+      GroVolVal,
+      @ObjectModel.foreignKey.association: '_GroVolUni'
+      GroVolUni,
+      @Semantics.quantity.unitOfMeasure: 'NetWeiUni'
+      NetWeiVal,
+      @ObjectModel.foreignKey.association: '_NetWeiUni'
+      NetWeiUni,
+//      @AnalyticsDetails.query.hidden: true
+      @EndUserText: { label: 'Packstücke', quickInfo: 'Packstücke' }
+      @Semantics.quantity.unitOfMeasure: 'QuaPcsUni'
+      QuaPcsVal,
+      @ObjectModel.foreignKey.association: '_QuaPcsUni'
+      QuaPcsUni,
+      @Semantics.quantity.unitOfMeasure: 'QuaPcs2Uni'
+      @AnalyticsDetails.query.hidden: true
+      QuaPcs2Val,
+      @ObjectModel.foreignKey.association: '_QuaPcs2Uni'
+      QuaPcs2Uni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'BaseUomUni'
+      BaseUomVal,
+      @ObjectModel.foreignKey.association: '_BaseUomUni'
+      BaseUomUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'PkgunWeiUni'
+      PkgunWeiVal,
+      @ObjectModel.foreignKey.association: '_PkgunWeiUni'
+      PkgunWeiUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'ContCntUni'
+      ContCntVal,
+      @ObjectModel.foreignKey.association: '_ContCntUni'
+      ContCntUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'DgAdrPtsUni'
+      DgAdrPtsVal,
+      @ObjectModel.foreignKey.association: '_DgAdrPtsUni'
+      DgAdrPtsUni,
+      RepQuantityExists,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfGroWeiUni'
+      CnfGroWeiVal,
+      @ObjectModel.foreignKey.association: '_CnfGroWeiUni'
+      CnfGroWeiUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfGroVolUni'
+      CnfGroVolVal,
+      @ObjectModel.foreignKey.association: '_CnfGroVolUni'
+      CnfGroVolUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfQuaPcsUni'
+      CnfQuaPcsVal,
+      @ObjectModel.foreignKey.association: '_CnfQuaPcsUni'
+      CnfQuaPcsUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfQuaPcs2Uni'
+      CnfQuaPcs2Val,
+      @ObjectModel.foreignKey.association: '_CnfQuaPcs2Uni'
+      CnfQuaPcs2Uni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfContCntUni'
+      CnfContCntVal,
+      @ObjectModel.foreignKey.association: '_CnfContCntUni'
+      CnfContCntUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'Measuom'
+      Length,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'Measuom'
+      Width,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'Measuom'
+      Height,
+      @ObjectModel.foreignKey.association: '_LengthUnit'
+      Measuom,
+      OverdimCargo,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.amount.currencyCode: 'AmtGdsvCur'
+      AmtGdsvVal,
+      @Semantics.currencyCode: true
+      AmtGdsvCur,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.amount.currencyCode: 'AmtGdsvCur'
+      AmtInsvVal,
+      AmtInsvCur,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.amount.currencyCode: 'AmtGdsvcCur'
+      AmtGdsvcVal,
+      AmtGdsvcCur,
+      AmtHvalCarInd,
+      DgoIndicator,
+      DgoCheckError,
+      DgoDocBased,
+      DgAdrNoExemption,
+      PackageId,
+      NonStackable,
+      Packcode,
+      PackageIdExt,
+      PackageIdSrc,
+      PackMatCat,
+      ProductId,
+      PrdKey,
+      PrdFrghtGrp,
+      PrdTranspGrp,
+      PrdDgprofl,
+      TranssrvreqCode,
+      FagKey,
+      FagItemKey,
+      FagServiceKey,
+      TranssrvlvlCode,
+      DlvPrio,
+      Mot,
+      MotCat,
+      ErpPlantId,
+      ErpCompOrgId,
+      ErpCompCode,
+      LoadingPointId,
+      Lgort,
+      DlvGoodsMvmnt,
+      DlvGoodsMvmntProcInd,
+      HuKey,
+      SlacVal,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'TempUom'
+      TempCtrlMin,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'TempUom'
+      TempCtrlMax,
+      TempUom,
+      LeadingItemKey,
+      Damaged,
+      CostDistRelevance,
+      WhProcessingStatus,
+      TuresTco,
+      TuresCat,
+      ShipperOwn,
+      ProvisionReq,
+      EmptyReturnReq,
+      OrganizedByOrdparty,
+      VentSettCode,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'AirExchUom'
+      AirExchRate,
+      AirExchUom,
+      ConsCont,
+      Platenumber,
+      ResClass,
+      Country,
+      ResKey,
+      ResId,
+      ExecStartDatetime,
+      ExecEndDatetime,
+      SrcLocKey,
+      SrcLocIatacode,
+      SrcLocUnlocode,
+      PicEarReq,
+      PicLatReq,
+      PicEarAcc,
+      PicLatAcc,
+      PicSelTime,
+      PicEarCnf,
+      PicLatCnf,
+      SrcStageKey,
+      DesLocKey,
+      DesLocIatacode,
+      DesLocUnlocode,
+      UnloadPoint,
+      DelEarReq,
+      DelLatReq,
+      DelEarAcc,
+      DelLatAcc,
+      DelPudlSpecification,
+      DelSelTime,
+      DelEarCnf,
+      DelLatCnf,
+      DesStageKey,
+      TrqOtrItemKey,
+      TranpPlDate,
+      MatAvailDate,
+      GoodsIssueDate,
+      DtItemGrpId,
+      DtPriorityC,
+      IncClassCode,
+      IncTransfLocN,
+      IncLocKey,
+      IncLocId,
+      IncLocEarReq,
+      IncLocLatReq,
+      IncLocEarAcc,
+      IncLocLatAcc,
+      DtOrdCombInd,
+      PdMaxNumber,
+      PdCtrlCode,
+      BaseBtdTco,
+      BaseBtdVersion,
+      BaseBtdKey,
+      BaseBtdLogsys,
+      BaseBtditemTco,
+      BaseBtditemId,
+      BaseBtditemKey,
+      BaseBtdDlvproc,
+      BaseBtdParitemId,
+      BaseBtdParitemTco,
+      OrigBtdTco,
+      OrigBtdId,
+      OrigBtditemTco,
+      OrigBtditemId,
+      OrigBtdDlvproc,
+      BuyorigBtdId,
+      BuyorigBtdDate,
+      BuyorigBtdItemId,
+      ItemCompleted,
+      OrdItmRejected,
+      OrdRejReason,
+      OrdItmCanceled,
+      GmRelevance,
+      TranspRelevance,
+      OrigPuDate,
+      OrigDlvDate,
+      OrigInclocDate,
+      QtyDtmFixed,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'QuaDlvUni'
+      QuaDlvVal,
+      QuaDlvUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'ParDlvMinUni'
+      ParDlvMinVal,
+      ParDlvMinUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'ParDlvRdfUni'
+      ParDlvRdfVal,
+      ParDlvRdfUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'QuaCompBsdUni'
+      QuaCompBsdVal,
+      QuaCompBsdUni,
+      TimestreamId,
+      PicPacActdur,
+      DlvSchedReltype,
+      DlvSchedId,
+      IntActualQty,
+      DlvRelevance,
+      DlvCompleted,
+      DlvBlocked,
+      DlvBlockReason,
+      DlvAddSplitcrt,
+      DlvReturn,
+      ItemHierTco,
+      BomIndicator,
+      OrigcountryCode,
+      OrigregionCode,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'ReqQtyUni'
+      ReqQtyVal,
+      ReqQtyUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'CnfQtyUni'
+      CnfQtyVal,
+      CnfQtyUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'RcvdQtyUni'
+      RcvdQtyVal,
+      RcvdQtyUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'OpenQtyUni'
+      OpenQtyVal,
+      OpenQtyUni,
+      BlkPlan,
+      BlkExec,
+      ExportBtType,
+      CustCommClass,
+      OutbCusprArea,
+      InbCusprArea,
+      OutbCusprStock,
+      InbCusprStock,
+      GtAtb,
+      GtAtbType,
+      GtAtbEdate,
+      GtBondCargo,
+      GtCustActIb,
+      GtImportLoc,
+      WmLogsys,
+      WmWhNumber,
+      WmWhCat,
+      WmWhDoor,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'PkgunVolUni'
+      PkgunVolVal,
+      PkgunVolUni,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'OutVolUni'
+      OutVolVal,
+      OutVolUni,
+      EewTrqItem,
+      ZzHuExtId,
+      ZzSpart,
+      ZzFab,
+      ZzAbladStation,
+      ZzOwner,
+      ZzStackability,
+      ZzSurface,
+      ZzEbeln,
+      ZzEbelp,
+      ZzDa1kz,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.quantity.unitOfMeasure: 'ZzVerifGrossMassUni'
+      ZzVerifGrossMassVal,
+      ZzVerifGrossMassUni,
+      ZzBulkyGood,
+      ZzBatch,
+      ProcessingStatus,
+      CutoffCustVgm,
+      TransportationOrderItemUUID,
+      TransportationOrderUUID,
+      TranspOrdItem,
+      TranspOrdItemType,
+      IsMultiItem,
+      TranspOrdItemParentItemUUID,
+      SourceStopUUID,
+      DestinationStopUUID,
+      TranspOrdItemDesc,
+      TranspOrdItemCategory,
+      IsMainCargoItem,
+      PredecessorTransportationOrder,
+      Shipper,
+      Consignee,
+      TransportationMode,
+      TransportationModeCategory,
+      MeansOfTransport,
+      TranspOrdItemIsDangerousGood,
+      MaterialFreightGroup,
+      MaterialFreightGroupName,
+      TransportationGroup,
+      TransportationGroupName,
+      ProductName,
+      TranspOrdDocReferenceID,
+      TranspOrdDocReferenceItmID,
+      TranspOrdDocReferenceType,
+      TranspOrdDocReferenceItmType,
+      TranspOrdItemSorting,
+      ShipperUUID,
+      ConsigneeAddressID,
+      ConsigneeUUID,
+      ProductUUID,
+      IncotermsClassification,
+      TranspOrdItemVoyage,
+      TranspOrdItemFlight,
+      TranspOrdItemVessel,
+      TranspOrdItemIMOShip,
+      CargoIsHighValue,
+      Plant,
+      TranspOrdItmWhseNmbr,
+      TranspOrdDocOrigRefType,
+      TranspOrdDocOrigRefID,
+      TransportationOrderCategory,
+      TransportationOrderType,
+      DangerousGoodsAreContained,
+      TransportationServiceLevel,
+      TranspOrdResponsiblePerson,
+      TranspOrdPartnerReference,
+      MasterBillOfLading,
+      TranspOrdPlanningBlock,
+      TranspOrdExecutionIsBlocked,
+      InvoicingIsBlocked,
+      CarrierUUID,
+      StandardCarrierAlphaCode,
+      TranspOrdAirlineIATACode,
+      TranspOrdAirWayBill,
+      CarrierAddressID,
+      CarrierOriginOfEntry,
+      ShipperAddressID,
+      TranspOrdShippingType,
+      MovementType,
+      TranspOrdTrafficDirection,
+      PlngAndExecOrganization,
+      PlngAndExecGroup,
+      PurchasingOrganization,
+      PurchasingOrgExternalID,
+      PurchasingGroup,
+      PurchasingGroupExternalID,
+      PurgOrgCompanyCode,
+      TranspOrdLifeCycleStatus,
+      TranspOrdPlanningStatus,
+      TransportationOrderExecSts,
+      TransportationRequestCategory,
+      CreatedByUser,
+      CreationDateTime,
+      LastChangedByUser,
+      ChangedDateTime,
+      TranspOrdLfcycStsChgDteTime,
+      TranspOrdOrderDateTime,
+      BusinessTransactionDocument,
+      BusinessTransactionDocType,
+      Entrepreneur,
+      LoadPlanStatus,
+      CustomsStatus,
+      SubcontractingStatus,
+      Fixation,
+      Preloading,
+      TrqCat,
+      Labeltxt,
+      OrderDate,
+      TrqCnfCrType,
+      TrqCnfSubInd,
+      TrqTemplateInd,
+      Logsys,
+      SenderPartyId,
+      OpAddressId,
+      OrderPartyKey,
+      OpPayterm,
+      PaymentStatus,
+      OpPaymentRecvd,
+      OpPrepayReqd,
+      TspAddressId,
+      TspKey,
+      TspScac,
+      TspAirlc,
+      TspAirlcawb,
+      @AnalyticsDetails.query.hidden: true
+      @Semantics.amount.currencyCode: 'OpAmtClcCur'
+      OpAmtClcVal,
+      OpAmtClcCur,
+      InsByLspInd,
+      FreightTerm,
+      QuotTrqKey,
+      QuotMode,
+      QuotValidFrom,
+      QuotValidTo,
+      QuotCreateTrq,
+      RfqRespCode,
+      RfqRejRCode,
+      RfqRespduedtime,
+      BaseBtdDate,
+      BaseBtdProctco,
+      DlvPicking,
+      DlvPacking,
+      DlvDistribution,
+      DlvBilling,
+      DlvPlanning,
+      DlvFuBtdTco,
+      DlvCrByTm,
+      DlvSpltupdStatus,
+      DlvSpltupdTime,
+      ShpplnBlocked,
+      ShpplnBlockReason,
+      Consumption,
+      CnclRsnCode,
+      SalesOrgId,
+      SalesOffId,
+      SalesGroupId,
+      RegulatedAgent,
+      WfCount,
+      TrackingNo,
+      ChangedBy,
+      ChangedOn,
+      BlkgEdi,
+      BlkConf,
+      BlkCfir,
+      BlkQuot,
+      ShippingType,
+      TrafficDirect,
+      MovemType,
+      ConsolType,
+      StageProfile,
+      StageDetStrat,
+      CrtradeFwoKey,
+      Uncontrolled,
+      GtExpDeclLsp,
+      GtImpDeclLsp,
+      EdiIndicator,
+      PlanDataIncomp,
+      Ageable,
+      ArchivingTime,
+      AgreementParty,
+      ServiceProductId,
+      AddFagKey,
+      AddFagItemKey,
+      AddServiceProductId,
+      ApprovalActive,
+      EmActive,
+      DirectEwmActive,
+      InvoicingEnable,
+      InvcIntEnable,
+      TccEnable,
+      TccIntEnable,
+      OneItemAllowed,
+      ShipmentLike,
+      FollowupTrqExp,
+      PlnReqCnfQty,
+      CustomsHandlg,
+      CmplcChkEnable,
+      PartnerSchema,
+      AcsCheckEnable,
+      AcsCopyLocdata,
+      InsEnable,
+      LogisticalRelevance,
+      IncLocStageRule,
+      TccEventProfile,
+      PaymentTerms,
+      Archiving,
+      Approval,
+      Confirmation,
+      Execution,
+      Completeness,
+      Creditlimit,
+      Compliance,
+      QuotAssignment,
+      @AnalyticsDetails.query.axis: #ROWS
+      @EndUserText: { label: 'Lieferstatus',
+                      quickInfo: 'Lieferstatus' }
+      Delivery,
+      AirSecurity,
+      AggrOrgInteraction,
+      DatetimeChlc,
+      DatetimeChcnf,
+      DatetimeChcmplc,
+      SciCode,
+      EewTrqRoot,
+      ZzVstel,
+      ZzLstel,
+      DefRouteKey,
+      MultiInvPty,
+      RespPerson,
+      AdvShpRecvRlv
+}

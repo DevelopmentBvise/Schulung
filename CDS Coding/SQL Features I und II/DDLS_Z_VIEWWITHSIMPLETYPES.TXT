@@ -1,0 +1,9 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View with Simple Types'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewWithSimpleTypes
+  as select distinct from t000
+{
+  cast ( abap.lang'E' as ZBT_LanguageA preserving type ) as Language1,
+  cast ( abap.lang'E' as ZBT_LanguageD preserving type ) as Language2
+}

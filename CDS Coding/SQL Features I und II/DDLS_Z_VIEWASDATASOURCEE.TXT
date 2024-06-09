@@ -1,0 +1,19 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'View acting as Data Source'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity Z_ViewAsDataSourceE
+  as select distinct from t000
+{
+  key cast( 'D' as abap.char(1) ) as FieldE1,
+  key cast( 'H' as abap.char(1) ) as FieldE2
+}
+union select distinct from t000
+{
+  key cast( 'D' as abap.char(1) ) as FieldE1,
+  key cast( 'I' as abap.char(1) ) as FieldE2
+}
+union select distinct from t000
+{
+  key cast( 'F' as abap.char(1) ) as FieldE1,
+  key cast( 'I' as abap.char(1) ) as FieldE2
+}
