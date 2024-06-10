@@ -1,0 +1,16 @@
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'Product Text'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.dataCategory: #TEXT
+@ObjectModel.representativeKey: 'Product'
+define view entity ZC_ProductText 
+  as projection on ZI_ProductText
+{
+  @Semantics.language: true
+  key Language,
+  @ObjectModel.text.element: ['ProductName']
+  key Product,
+  @Semantics.text: true
+  ProductName,
+  _Product : redirected to parent ZC_Product
+}

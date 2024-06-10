@@ -1,0 +1,23 @@
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'Product'
+@Metadata.ignorePropagatedAnnotations: true
+@OData.entityType.name: 'Product_Type'
+define root view entity ZC_Product 
+  as projection on ZI_Product
+{    
+      @Consumption.valueHelpDefinition: [{
+         entity: {
+            name: 'ZI_ProductStdVH',
+            element: 'Product'  } } ]
+      @EndUserText.label: 'Product'
+      @ObjectModel.text.element: ['ProductName']
+      @UI.lineItem: [{ importance: #HIGH }]
+      @UI.selectionField: [{position:1}]
+  key Product,
+      @EndUserText.label: 'Product Type'
+      @UI.lineItem: [{ importance: #HIGH }]
+      ProductType,
+      @Semantics.text: true
+      _Text.ProductName : localized,
+      _Text : redirected to composition child ZC_ProductText
+}

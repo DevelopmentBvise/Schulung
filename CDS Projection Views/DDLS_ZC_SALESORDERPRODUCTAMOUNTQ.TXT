@@ -1,0 +1,19 @@
+@AccessControl.authorizationCheck: #NOT_ALLOWED
+@EndUserText.label: 'Sales Order Product Amount Query'
+@Metadata.ignorePropagatedAnnotations: true
+//@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY]
+//@ObjectModel.modelingPattern: #ANALYTICAL_QUERY
+@VDM.viewType: #CONSUMPTION
+define transient view entity ZC_SalesOrderProductAmountQ
+  provider contract analytical_query
+  with parameters
+    @Consumption.defaultValue: 'EUR'
+    P_DisplayCurrency : vdm_v_display_currency
+  as projection on ZI_SalesOrderItemCube( P_DisplayCurrency : $parameters.P_DisplayCurrency )
+{
+  SalesOrder,
+  Product,
+  @Semantics.amount.currencyCode: 'DisplayCurrency'
+  NetAmountInDisplayCurrency,
+  DisplayCurrency
+}

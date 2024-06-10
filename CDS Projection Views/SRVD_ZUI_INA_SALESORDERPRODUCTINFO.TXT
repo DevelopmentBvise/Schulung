@@ -1,0 +1,4 @@
+@EndUserText.label: 'Sales Order Product Information'
+define service ZUI_INA_SalesOrderProductInfo {
+  expose ZC_SalesOrderProductAmountQ;
+}
