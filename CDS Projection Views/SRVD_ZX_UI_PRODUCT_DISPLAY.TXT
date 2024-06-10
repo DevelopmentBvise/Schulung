@@ -1,3 +1,0 @@
-extend service ZUI_PRODUCT_DISPLAY with {
-  expose ZI_Customer as ZZ1_Customer;
-}

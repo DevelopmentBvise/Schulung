@@ -1,0 +1,39 @@
+@VDM.viewType: #BASIC
+@ObjectModel: { dataCategory: #HIERARCHY }
+@AbapCatalog.sqlViewName: 'ZIORGUNITH'
+@Hierarchy.parentChild.name: 'ORGEH_01'
+@Hierarchy.parentChild.label: 'Orgunit hierarchy 01'
+@Hierarchy.parentChild: 
+{ recurse:          {   parent: 'ParentNode',   child:  'HierarchyNode'   },
+  siblingsOrder:    {   by: 'HierarchyNode',    direction: 'ASC'   },
+  orphanedNode.handling: #ROOT_NODES,
+ rootNode.visibility: #DO_NOT_ADD_ROOT_NODE
+  }
+@AccessControl.authorizationCheck: #NOT_ALLOWED  
+
+define view Zi_Orgunit_H       
+     
+ as select from P_PDOBJECT as object 
+ 
+ inner join P_PDRELATION as relation  on
+   relation.PlanVersion       =  object.PlanVersion  and   
+   relation.ObjectType        =  object.ObjectType   and
+   relation.ObjectID          =  object.ObjectID     and
+   relation.RelationStatus    =  object.ObjectStatus  
+ association[0..*] to Zi_Orgunit_Dim as _Zi_Orgunit_Dim on $projection.OrgUnit = _Zi_Orgunit_Dim.Orgunit
+ 
+{       
+    key object.ObjectID as HierarchyNode,
+    relation.EndDate as RelationEndDate,
+    relation.StartDate as RelationStartDate,
+    relation.RelatedObjectID  as ParentNode,
+    @ObjectModel.foreignKey.association: '_Zi_Orgunit_Dim'
+    relation.ObjectID as OrgUnit,
+    
+    _Zi_Orgunit_Dim
+ 
+} where object.PlanVersion = '01' and
+        relation.ObjectType             = 'O' and
+        relation.RelationShipDirection  = 'A' and
+        relation.ReleationShip          = '002' and
+        relation.RelatedObjectType      = 'O'

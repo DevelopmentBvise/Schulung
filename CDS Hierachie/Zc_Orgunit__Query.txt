@@ -1,0 +1,20 @@
+@AbapCatalog.sqlViewName: 'ZC_ORGUNITQ'
+@AbapCatalog.compiler.compareFilter: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'ZC_ORGUNIT__QUERY'
+@Analytics.query: true
+@VDM.viewType: #CONSUMPTION  
+@OData.publish: true
+define view Zc_Orgunit__Query as select from Zi_Orgunit_Dim {
+
+@AnalyticsDetails.query.displayHierarchy:#FILTER
+@AnalyticsDetails.query.hierarchyInitialLevel: 3
+@Consumption.filter.selectionType: #HIERARCHY_NODE
+@AnalyticsDetails.query.axis: #ROWS
+Zi_Orgunit_Dim.Orgunit, 
+@AnalyticsDetails.query.axis: #ROWS
+Zi_Orgunit_Dim.EndDate, 
+@AnalyticsDetails.query.axis: #ROWS
+Zi_Orgunit_Dim.StartDate
+    
+}

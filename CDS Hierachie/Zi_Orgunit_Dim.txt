@@ -1,0 +1,30 @@
+@AbapCatalog.sqlViewName: 'ZIORGUNITD'
+@AbapCatalog.compiler.compareFilter: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'ZI_ORGUNIT_DIM'
+@VDM.viewType: #BASIC
+@Analytics: { dataCategory: #DIMENSION, dataExtraction.enabled: true }
+@ObjectModel.representativeKey: 'Orgunit'
+define view Zi_Orgunit_Dim
+ as select distinct from P_PDOBJECT 
+    association[0..*] to Zi_Orgunit_H  as _OrgUnit_Hier on  $projection.Orgunit    = _OrgUnit_Hier.OrgUnit
+                                                       
+    association[0..*] to I_OrgUnitText as _Text on
+        $projection.Orgunit = _Text.OrganizationalUnit                                                                      
+{
+@ObjectModel.Hierarchy.association: '_OrgUnit_Hier'
+@ObjectModel.text.element:  [ 'OrgunitName' ] 
+@EndUserText.label: 'Orgunit'
+key P_PDOBJECT.ObjectID as Orgunit, 
+@Semantics.businessDate.to: true
+P_PDOBJECT.EndDate,
+@Semantics.businessDate.from: true
+P_PDOBJECT.StartDate,
+
+/*Assosiations*/
+_OrgUnit_Hier,
+/*Text*/
+@Semantics.text: true
+_Text.OrganizationalUnitName as OrgunitName
+    
+} where P_PDOBJECT.ObjectType = 'O';
