@@ -1,0 +1,9 @@
+@EndUserText.label: 'Auto assigned mapping role for ZC_SalesOrderWithUserInput'
+@MappingRole: true
+define role ZC_SalesOrderWithUserInput {
+    grant select on ZC_SalesOrderWithUserInput
+    where ( UserInput ) =
+    aspect pfcg_auth ( V_VBAK_AAT,
+                       AUART,
+                       ACTVT = '03' );
+}
