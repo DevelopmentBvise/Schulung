@@ -1,3 +1,15 @@
-Um sich in der ON-Bedingung auf ein Element der SELECT-Liste zu beziehen, kann dem Feldnamen der Präfix $projection statt des Namens der Ausgangsdatenquelle vorangestellt werden. In diesem Fall kann statt des Feldnamens auch ein mit AS definierter alternativer Elementname angegeben werden. Wenn bei Verwendung des Präfix $projection in der ON-Bedingung ein Pfadausdruck der SELECT-Liste verwendet wird, darf die aktuelle Assoziation nicht selbst in der SELECT-Liste verwendet werden, um ungültige Join-Ausdrücke zu vermeiden.
+Um sich in der ON-Bedingung auf ein Element der SELECT-Liste zu beziehen, kann dem 
+Feldnamen der Präfix $projection statt des Namens der Ausgangsdatenquelle 
+vorangestellt werden. In diesem Fall kann statt des Feldnamens auch ein mit AS 
+definierter alternativer Elementname angegeben werden. Wenn bei Verwendung des Präfix 
+$projection in der ON-Bedingung ein Pfadausdruck der SELECT-Liste verwendet wird, darf 
+die aktuelle Assoziation nicht selbst in der SELECT-Liste verwendet werden, um 
+ungültige Join-Ausdrücke zu vermeiden.
 
-To make a reference to an element of the SELECT list in the ON condition, the field name can be prefixed with $projection instead of the source data source. In this case, an alternative element name defined using AS can be specified instead of the field name. If a path expression of the SELECT list is used when the prefix $projection is used in the ON condition, the current association cannot itself be used in the SELECT list, to avoid invalid join expressions.
+
+To make a reference to an element of the SELECT list in the ON condition, the field 
+name can be prefixed with $projection instead of the source data source. In this case,
+an alternative element name defined using AS can be specified instead of the field 
+name. If a path expression of the SELECT list is used when the prefix $projection is 
+used in the ON condition, the current association cannot itself be used in the SELECT 
+list, to avoid invalid join expressions.
