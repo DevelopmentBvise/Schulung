@@ -1,0 +1,13 @@
+@EndUserText.label : 'Control structure MySalesOrder'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+define structure zsrap_mysalesorder_x {
+  id      : xsdboolean;
+  kunnr   : xsdboolean;
+  memo1   : xsdboolean;
+  memo2   : xsdboolean;
+  zeitpkt : xsdboolean;
+  netwr   : xsdboolean;
+  waerk   : xsdboolean;
+  status  : xsdboolean;
+
+}
