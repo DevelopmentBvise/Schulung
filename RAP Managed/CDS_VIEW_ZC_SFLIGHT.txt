@@ -1,0 +1,178 @@
+@EndUserText.label: 'Projection View SFLIGHT'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@UI.headerInfo: {
+    typeName: 'Flug Root',
+    typeNamePlural: 'Flüge Root',
+    title: {
+        value: 'Carrid',
+        type: #STANDARD,
+        label: 'Test'
+        },
+    description: {
+        label: 'Flug Root',
+        type: #STANDARD,
+        value: 'Fldate'
+        }
+}
+
+@UI.chart: [
+    {
+        qualifier: 'bulletChart',
+        title: 'Sitzplatzauslastung',
+        chartType: #BULLET,
+        measures: [ 'Seatsocc' ],
+        measureAttributes: [{
+            measure: 'Seatsocc',
+            role: #AXIS_1,
+            asDataPoint: true
+         }]
+    }
+]
+
+define root view entity ZC_SFLIGHT
+  provider contract transactional_query
+  as projection on ZI_SFLIGHT
+{
+      @UI.facet: [
+         {
+             purpose: #HEADER,
+             type: #COLLECTION,
+             id: 'FacetCollection'
+         },
+         {
+            purpose: #HEADER,
+            type: #COLLECTION,
+            id: 'FacetCollection2'
+         },
+
+         {
+            purpose: #STANDARD,
+            type: #FIELDGROUP_REFERENCE,
+            label: 'Preisinformationen',
+            position: 10,
+            targetQualifier: 'OP_Fieldgroup'
+         },
+         {
+             parentId: 'FacetCollection',
+             label: 'Eindeutige Fluginformation',
+             type: #FIELDGROUP_REFERENCE,
+             targetQualifier: 'HeaderData'
+         },
+         {
+            parentId: 'FacetCollection2',
+            type: #CHART_REFERENCE,
+            targetQualifier: 'bulletChart'
+         },
+         {
+            purpose: #STANDARD,
+            type: #LINEITEM_REFERENCE,
+            label: 'Buchungen',
+            position: 20,
+            targetElement: '_Booking'
+         }
+      ]
+
+
+
+
+
+      @Consumption.valueHelpDefinition: [
+        {
+            entity: { name: 'zi_vh_scarr', element: 'Carrid' },
+            label: 'Fluggesellschaften',
+            qualifier: 'CarrierValueHelp',
+            useForValidation: true
+        }]
+      @UI: {
+          lineItem: [
+              {
+                position: 10,
+                importance: #HIGH
+              }
+          ],
+          selectionField: [{ position: 10 }],
+          fieldGroup: [
+              {
+                qualifier: 'HeaderData',
+                position: 10,
+                label: 'Airline'
+              }
+          ],
+          multiLineText: true
+      }
+      @UI.identification: [{ position: 10 }]
+  key Carrid,
+      @UI.selectionField: [{ position: 20 }]
+      @UI.fieldGroup: [{
+           qualifier: 'HeaderData',
+           label: 'Verbindungsnummer',
+           position: 20,
+           type: #STANDARD }]
+      @UI.lineItem: [{ position: 30 }]
+      @UI.identification: [{ position: 20 }]
+      @Consumption.valueHelpDefinition: [
+        {
+            entity: { name: 'zi_vh_spfli', element: 'Connid' },
+            label: 'Verbindungen',
+            qualifier: 'ConnectionValueHelp',
+            useForValidation: true
+        }]
+  key Connid,
+      @UI.selectionField: [{ position: 30 }]
+      @UI.lineItem: [{ position: 40 }]
+      @UI.fieldGroup: [{
+           qualifier: 'HeaderData',
+           label: 'Flugdatum',
+           position: 30,
+           type: #STANDARD }]
+      @UI.identification: [{ position: 30 }]
+  key Fldate,
+      @UI.fieldGroup: [{
+        qualifier: 'OP_Fieldgroup',
+        position: 10
+      }]
+      @UI.identification: [{ position: 40 }]
+      Price,
+      Currency,
+      @UI.lineItem: [{ position: 80 }]
+      @UI.identification: [{ position: 50 }]
+      Planetype,
+      Seatsmax,
+      @UI: {
+          dataPoint: {
+            qualifier: 'Seatsocc',
+            targetValueElement: 'Seatsmax',
+            visualization: #PROGRESS,
+            title: 'Auslastung'
+          },
+          lineItem: [
+            {
+              type: #AS_DATAPOINT,
+              label: 'Sitzplatzauslastung Economy',
+              importance: #HIGH,
+              position: 50,
+              valueQualifier: 'Seatsocc'
+            }
+          ]
+        }
+      Seatsocc,
+      @UI.lineItem: [{ position: 100 }]
+      Paymentsum,
+      @Consumption.filter.hidden: true
+      SeatsmaxB,
+      @Consumption.filter.hidden: true
+      @UI.lineItem: [{ position: 100 }]
+      SeatsoccB,
+      @Consumption.filter.hidden: true
+      SeatsmaxF,
+      @Consumption.filter.hidden: true
+      @UI.lineItem: [{ position: 100 }]
+      SeatsoccF,
+      CreatedAt,
+      CreatedBy,
+      LastChangedAt,
+      LastChangedBy,
+      LocalLastChangedAt,
+      /* Associations */
+      _Booking : redirected to composition child ZC_SBOOK
+}

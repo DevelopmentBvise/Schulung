@@ -1,0 +1,43 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Interface View SBook'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+    serviceQuality: #X,
+    sizeCategory: #S,
+    dataClass: #MIXED
+}
+define view entity ZI_SBOOK
+  as select from sbook
+  association to parent ZI_SFLIGHT as _Flight on  $projection.Carrid = _Flight.Carrid
+                                              and $projection.Connid = _Flight.Connid
+                                              and $projection.Fldate = _Flight.Fldate
+{
+  key carrid     as Carrid,
+  key connid     as Connid,
+  key fldate     as Fldate,
+  key bookid     as Bookid,
+      customid   as Customid,
+      custtype   as Custtype,
+      smoker     as Smoker,
+      @Semantics.quantity.unitOfMeasure: 'Wunit'
+      luggweight as Luggweight,
+      wunit      as Wunit,
+      invoice    as Invoice,
+      class      as Class,
+      @Semantics.amount.currencyCode: 'Forcurkey'
+      forcuram   as Forcuram,
+      forcurkey  as Forcurkey,
+      @Semantics.amount.currencyCode: 'Loccurkey'
+      loccuram   as Loccuram,
+      loccurkey  as Loccurkey,
+      order_date as OrderDate,
+      counter    as Counter,
+      agencynum  as Agencynum,
+      cancelled  as Cancelled,
+      reserved   as Reserved,
+      passname   as Passname,
+      passform   as Passform,
+      passbirth  as Passbirth,
+      _Flight
+}

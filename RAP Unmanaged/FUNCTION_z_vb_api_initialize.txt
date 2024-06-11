@@ -1,0 +1,7 @@
+FUNCTION z_vb_api_initialize.
+
+
+
+  CLEAR gt_buffer_zvbak.
+
+ENDFUNCTION.

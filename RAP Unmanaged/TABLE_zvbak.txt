@@ -1,0 +1,29 @@
+@EndUserText.label : 'Z-Kundenauftrag'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zvbak {
+  @AbapCatalog.foreignKey.screenCheck : true
+  key mandt : mandt not null
+    with foreign key t000
+      where mandt = zvbak.mandt;
+  key id    : zid not null;
+  @AbapCatalog.foreignKey.screenCheck : true
+  kunnr     : kunag
+    with foreign key kna1
+      where mandt = zvbak.mandt
+        and kunnr = zvbak.kunnr;
+  memo1     : text30;
+  memo2     : text30;
+  zeitpkt   : timestampl;
+  @Semantics.amount.currencyCode : 'zvbak.waerk'
+  netwr     : netwr;
+  @AbapCatalog.foreignKey.screenCheck : true
+  waerk     : waerk
+    with foreign key tcurc
+      where mandt = zvbak.mandt
+        and waers = zvbak.waerk;
+  status    : zstatus;
+
+}

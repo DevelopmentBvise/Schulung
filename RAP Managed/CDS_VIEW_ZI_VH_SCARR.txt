@@ -1,0 +1,20 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Value Help Carrier'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+    serviceQuality: #X,
+    sizeCategory: #S,
+    dataClass: #MIXED
+}
+define view entity ZI_VH_SCARR as select from scarr
+{
+    @Consumption.valueHelpDefault.display: false
+    key carrid as Carrid,
+    @Consumption.valueHelpDefault.display: true
+    carrname as Carrname,
+    @Consumption.valueHelpDefault.display: true
+    currcode as Currcode,
+    @Consumption.valueHelpDefault.display: true
+    url as Url
+}

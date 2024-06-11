@@ -1,0 +1,32 @@
+projection;
+//strict;
+use draft;
+
+define behavior for ZC_SFLIGHT alias Flight
+
+{
+
+  use create;
+  use update;
+  use delete;
+
+  use association _Booking { create; }
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+  use action Resume;
+}
+
+define behavior for ZC_SBOOK //alias <alias_name>
+
+{
+  use update;
+  use delete;
+
+  use association _Flight;
+
+  use action upgrade_class;
+
+}

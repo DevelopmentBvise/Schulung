@@ -1,0 +1,26 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Interface View SFlight'
+define root view entity ZI_SFLIGHT
+  as select from sflight
+  composition [0..*] of ZI_SBOOK as _Booking
+{
+  key znm_sflight.carrid     as Carrid,
+  key znm_sflight.connid     as Connid,
+  key znm_sflight.fldate     as Fldate,
+      znm_sflight.price      as Price,
+      znm_sflight.currency   as Currency,
+      znm_sflight.planetype  as Planetype,
+      znm_sflight.seatsmax   as Seatsmax,
+      znm_sflight.seatsocc   as Seatsocc,
+      znm_sflight.paymentsum as Paymentsum,
+      znm_sflight.seatsmax_b as SeatsmaxB,
+      znm_sflight.seatsocc_b as SeatsoccB,
+      znm_sflight.seatsmax_f as SeatsmaxF,
+      znm_sflight.seatsocc_f as SeatsoccF,
+      znm_sflight.created_at as CreatedAt,
+      znm_sflight.created_by as CreatedBy,
+      znm_sflight.last_changed_at as LastChangedAt,
+      znm_sflight.last_changed_by as LastChangedBy,
+      znm_sflight.locl_last_changed_at as LocalLastChangedAt,
+      _Booking
+}

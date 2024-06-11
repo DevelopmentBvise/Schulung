@@ -1,0 +1,65 @@
+@EndUserText.label: 'Projection View SBOOK'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@UI.headerInfo: {
+    typeName: 'Buchung',
+    typeNamePlural: 'Buchungen',
+    title: {
+        value: 'Passname',
+        type: #STANDARD,
+        label: 'Name'
+        },
+    description: {
+        label: 'Buchungsnummer',
+        type: #STANDARD,
+        value: 'Bookid'
+        }
+}
+define view entity ZC_SBOOK
+  as projection on ZI_SBOOK
+{
+      @UI.facet: [{ purpose: #STANDARD,
+                    position: 10,
+                    label: 'Buchungsinformationen',
+                    type: #IDENTIFICATION_REFERENCE }]
+  key Carrid,
+  key Connid,
+  key Fldate,
+      @UI.lineItem: [{ position: 50 }]
+      @UI.identification: [{ position: 10 }]
+  key Bookid,
+      @UI.identification: [{ position: 20 }]
+      Customid,
+      @UI.identification: [{ position: 30 }]
+      Custtype,
+      @UI.identification: [{ position: 40 }]
+      Smoker,
+      @UI.lineItem: [{ position: 30 }]
+      @UI.identification: [{ position: 50,
+                             type: #FOR_ACTION,
+                             dataAction: 'upgrade_class',
+                             label: 'Upgrade' }]
+      Luggweight,
+      Wunit,
+      Invoice,
+      @UI.lineItem: [{ position: 40 }]
+      @UI.identification: [{ position: 51 }]
+      Class,
+      Forcuram,
+      Forcurkey,
+      Loccuram,
+      Loccurkey,
+      @UI.lineItem: [{ position: 20 }]
+      @UI.identification: [{ position: 60 }]
+      OrderDate,
+      Counter,
+      Agencynum,
+      Cancelled,
+      @UI.identification: [{ position: 70 }]
+      Reserved,
+      @UI.lineItem: [{ position: 10 }]
+      Passname,
+      Passform,
+      Passbirth,
+      /* Associations */
+      _Flight: redirected to parent ZC_SFLIGHT
+}

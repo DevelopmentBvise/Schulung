@@ -1,0 +1,40 @@
+managed implementation in class zbp_i_sflight unique;
+with draft;
+
+define behavior for ZI_SFLIGHT //alias <alias_name>
+persistent table ZNM_SFLIGHT
+draft table zdraft_znm_sflig
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  association _Booking { create; }
+
+  draft determine action Prepare;
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+
+  validation validateFlightDate on save {create;}
+}
+
+define behavior for ZI_SBOOK //alias <alias_name>
+persistent table SBOOK
+draft table zdraft_sbook
+lock dependent by _Flight
+authorization dependent by _Flight
+etag dependent by _Flight
+{
+  update;
+  delete;
+  field ( readonly ) Carrid, Connid, Fldate;
+  association _Flight;
+
+  action ( features : instance ) upgrade_class result [1] $self;
+  determination checkSeatsOcc on modify {create;}
+}

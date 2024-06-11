@@ -1,0 +1,165 @@
+CLASS lhc_zi_sbook DEFINITION INHERITING FROM cl_abap_behavior_handler.
+
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zi_sbook RESULT result.
+
+    METHODS upgrade_class FOR MODIFY
+      IMPORTING keys FOR ACTION zi_sbook~upgrade_class RESULT result.
+
+    METHODS get_instance_features
+        FOR INSTANCE FEATURES
+        IMPORTING keys
+        REQUEST req_feat
+        FOR zi_sbook
+        RESULT result.
+    METHODS checkseatsocc FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zi_sbook~checkseatsocc.
+
+ENDCLASS.
+
+CLASS lhc_zi_sbook IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD upgrade_class.
+    DATA bookings_for_update TYPE TABLE FOR UPDATE ZC_SBOOK.
+    DATA upgraded_class.
+
+    READ ENTITIES OF zc_sflight
+        ENTITY zc_sbook
+            FIELDS ( Carrid
+                     Connid
+                     Fldate
+                     Class )
+                WITH CORRESPONDING #( keys )
+            RESULT DATA(bookings).
+
+    LOOP AT bookings ASSIGNING FIELD-SYMBOL(<booking>).
+      CASE <booking>-Class.
+        WHEN 'C' OR 'B'.
+            upgraded_class = 'F'.
+        WHEN 'Y'.
+            upgraded_class = 'B'.
+        WHEN 'F'.
+            upgraded_class = 'F'.
+      ENDCASE.
+
+      APPEND VALUE #( %tky       = <booking>-%tky
+                    Class = upgraded_class
+                  ) TO bookings_for_update.
+    ENDLOOP.
+
+    MODIFY ENTITIES OF zc_sflight
+        ENTITY zc_sbook
+            UPDATE FIELDS ( Class )
+            WITH bookings_for_update.
+
+    READ ENTITIES OF ZC_SFLIGHT
+      ENTITY ZC_SBOOK
+      ALL FIELDS WITH
+      CORRESPONDING #( bookings )
+      RESULT DATA(bookings_with_upgrade).
+
+  " set action result
+  result = VALUE #( FOR booking IN bookings_with_upgrade ( %tky   = booking-%tky
+                                                            %param = booking ) ).
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+    READ ENTITIES OF zc_sflight
+      ENTITY zc_sbook
+        FIELDS ( Carrid
+                 Connid
+                 Fldate
+                 Class )
+        WITH CORRESPONDING #( keys )
+      RESULT DATA(bookings).
+
+    result = VALUE #( FOR booking in bookings
+                    ( %tky                   = booking-%tky
+
+                      %action-upgrade_class = COND #( WHEN booking-Class = 'A' OR booking-Class = 'F'
+                                                          THEN if_abap_behv=>fc-o-disabled ELSE if_abap_behv=>fc-o-enabled   ) ) ).
+  ENDMETHOD.
+
+
+  METHOD checkSeatsOcc.
+    DATA flights_for_update TYPE TABLE FOR UPDATE ZC_SFLIGHT.
+    DATA updated_seats type zc_sflight-Seatsocc.
+
+    READ ENTITIES OF zc_sflight
+        ENTITY zc_sflight
+        FIELDS ( Carrid
+                 Connid
+                 Fldate
+                 SeatsOcc )
+        WITH CORRESPONDING #( keys )
+        RESULT DATA(flights).
+
+    LOOP AT flights INTO DATA(flight).
+        SELECT COUNT( * )
+        INTO @updated_seats
+        FROM ZC_SBOOK
+        WHERE Carrid = @flight-Carrid
+        AND Connid = @flight-Connid
+        AND Fldate = @flight-Fldate
+        AND Class = 'Y'
+        OR Class = 'C'.
+
+      APPEND VALUE #( %tky       = flight-%tky
+                    Seatsocc = updated_seats
+                  ) TO flights_for_update.
+    ENDLOOP.
+
+    MODIFY ENTITIES OF zc_sflight
+        ENTITY zc_sflight
+            UPDATE FIELDS ( Seatsocc )
+            WITH flights_for_update.
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS lhc_zi_sflight DEFINITION INHERITING FROM cl_abap_behavior_handler.
+
+  PRIVATE SECTION.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zi_sflight RESULT result.
+    METHODS validateflightdate FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zi_sflight~validateflightdate.
+
+ENDCLASS.
+
+CLASS lhc_zi_sflight IMPLEMENTATION.
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD validateFlightDate.
+    READ ENTITIES OF zc_sflight
+        ENTITY zc_sflight
+        FIELDS ( Fldate ) WITH CORRESPONDING #( keys )
+        RESULT DATA(fldates).
+
+    LOOP AT fldates INTO DATA(fldate).
+        IF fldate-Fldate < sy-datum.
+            APPEND VALUE #( %tky = fldate-%tky ) TO failed-zi_sflight.
+
+            APPEND VALUE #( %tky = keys[ 1 ]-%tky
+                        %msg = new_message_with_text(
+                        severity = if_abap_behv_message=>severity-error
+                        text = 'Das Datum darf nicht in der Vergangenheit liegen!'
+                        ) ) TO reported-zi_sflight.
+        ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+ENDCLASS.
+
+*"* use this source file for the definition and implementation of
+*"* local helper classes, interface definitions and type
+*"* declarations

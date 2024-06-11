@@ -1,0 +1,25 @@
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Value Help Connection'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.usageType:{
+    serviceQuality: #X,
+    sizeCategory: #S,
+    dataClass: #MIXED
+}
+define view entity ZI_VH_SPFLI as select from spfli
+{   
+    @Consumption.valueHelpDefault.display: false
+    key carrid as Carrid,
+    @Consumption.valueHelpDefault.display: false
+    key connid as Connid,
+    @Consumption.valueHelpDefault.display: true
+    countryfr as Countryfr,
+    @Consumption.valueHelpDefault.display: true
+    cityfrom as Cityfrom,
+    @Consumption.valueHelpDefault.display: true
+    countryto as Countryto,
+    @Consumption.valueHelpDefault.display: true
+    cityto as Cityto
+}
+

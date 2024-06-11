@@ -1,0 +1,10 @@
+FUNCTION z_vb_api_read_all
+  EXPORTING
+    et_buffer_zvbak TYPE zvbak_buffer_t.
+
+
+
+  et_buffer_zvbak = gt_buffer_zvbak.
+
+
+ENDFUNCTION.
