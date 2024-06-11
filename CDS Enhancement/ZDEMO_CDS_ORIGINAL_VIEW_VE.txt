@@ -1,0 +1,15 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
+@EndUserText.label: 'Further information about the CDS entity'
+define view entity ZDEMO_CDS_ORIGINAL_VIEW_VE 
+  as select from
+           spfli
+      join scarr on
+        scarr.carrid = spfli.carrid
+    {
+      key scarr.carrname     as carrier,
+      key spfli.carrid       as carrierId,
+      key spfli.connid       as flight,
+          spfli.cityfrom     as departure,
+          spfli.cityto       as destination
+    }; 
