@@ -1,7 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Interface View SFlight'
 define root view entity ZI_SFLIGHT
-  as select from sflight
+  as select from znm_sflight
   composition [0..*] of ZI_SBOOK as _Booking
 {
   key znm_sflight.carrid     as Carrid,
