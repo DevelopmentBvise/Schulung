@@ -1,0 +1,22 @@
+@AbapCatalog.sqlViewName: 'ZC_SALESORDERPR'
+@AccessControl.authorizationCheck: #NOT_ALLOWED
+@EndUserText.label: 'Sales Order Product Amount Query'
+@Metadata.ignorePropagatedAnnotations: true
+@ObjectModel.supportedCapabilities: [#ANALYTICAL_QUERY]
+@ObjectModel.modelingPattern: #ANALYTICAL_QUERY
+@Analytics: { query: true }
+@VDM.viewType: #CONSUMPTION
+define view ZC_SALESORDERPRODUCTAMOUNTQ2
+with parameters
+@Consumption.defaultValue: 'EUR'
+P_DisplayCurrency : vdm_v_display_currency
+as select from ZI_SalesOrderItemCube( P_DisplayCurrency : $parameters.P_DisplayCurrency )
+{
+key SalesOrder,
+key SalesOrderItem,
+@Consumption: {filter: {selectionType: #INTERVAL, multipleSelections: true}}
+Product,
+@Semantics.amount.currencyCode: 'DisplayCurrency'
+NetAmountInDisplayCurrency,
+DisplayCurrency
+}
