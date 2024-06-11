@@ -1,6 +1,6 @@
 extend view entity ZDEMO_CDS_ORIGINAL_VIEW_VE with
-association [1..*] to sflight as _sflight 
-  on $projection.carrierId = _sflight.carrid
+association [1..1] to sflight as _sflight on $projection.carrid = _sflight.carrid
 {
-  _sflight
+_sflight.seatsmax,
+_sflight
 }

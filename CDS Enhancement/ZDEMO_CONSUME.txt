@@ -1,0 +1,15 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#PROJECTION_LIST]
+@EndUserText.label: 'Further information about the CDS entity'
+define view entity ZDEMO_CONSUME
+as select from ZDEMO_CDS_ORIGINAL_VIEW_VE
+{
+key carrier,
+key flight,
+carrid,
+departure,
+destination,
+seatsmax,
+/* Associations */
+_sflight
+};
