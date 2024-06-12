@@ -1,0 +1,36 @@
+@EndUserText.label : ''
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zdraft_sbook {
+  key mandt  : mandt not null;
+  key carrid : s_carr_id not null;
+  key connid : s_conn_id not null;
+  key fldate : s_date not null;
+  key bookid : s_book_id not null;
+  customid   : s_customer;
+  custtype   : s_custtype;
+  smoker     : s_smoker;
+  @Semantics.quantity.unitOfMeasure : 'zdraft_sbook.wunit'
+  luggweight : s_lugweigh;
+  wunit      : s_weiunit;
+  invoice    : s_invflag;
+  class      : s_class;
+  @Semantics.amount.currencyCode : 'zdraft_sbook.forcurkey'
+  forcuram   : s_f_cur_pr;
+  forcurkey  : s_curr;
+  @Semantics.amount.currencyCode : 'zdraft_sbook.loccurkey'
+  loccuram   : s_l_cur_pr;
+  loccurkey  : s_currcode;
+  orderdate  : s_bdate;
+  counter    : s_countnum;
+  agencynum  : s_agncynum;
+  cancelled  : s_cancel;
+  reserved   : s_reserv;
+  passname   : s_passname;
+  passform   : s_form;
+  passbirth  : s_birthdat;
+  "%admin"   : include sych_bdl_draft_admin_inc;
+
+}
