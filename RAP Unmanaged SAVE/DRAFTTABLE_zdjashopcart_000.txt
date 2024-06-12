@@ -1,0 +1,29 @@
+@EndUserText.label : '##GENERATED #'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #L
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zdjashopcart_000 {
+  key client          : abap.clnt not null;
+  key orderuuid       : sysuuid_x16 not null;
+  orderid             : abap.numc(8);
+  ordereditem         : abap.char(10);
+  @Semantics.amount.currencyCode : 'zdjashopcart_000.currency'
+  price               : abap.curr(11,2);
+  @Semantics.amount.currencyCode : 'zdjashopcart_000.currency'
+  totalprice          : abap.curr(11,2);
+  currency            : abap.cuky;
+  orderquantity       : abap.numc(4);
+  deliverydate        : abap.dats;
+  overallstatus       : abap.char(30);
+  notes               : abap.string(256);
+  createdby           : abp_creation_user;
+  createdat           : abp_creation_tstmpl;
+  lastchangedby       : abp_lastchange_user;
+  lastchangedat       : abp_lastchange_tstmpl;
+  locallastchangedat  : abp_locinst_lastchange_tstmpl;
+  purchaserequisition : abap.char(10);
+  prcreationdate      : abap.dats;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}

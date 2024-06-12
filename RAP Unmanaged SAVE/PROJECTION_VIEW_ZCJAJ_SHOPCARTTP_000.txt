@@ -1,0 +1,22 @@
+@AccessControl.authorizationCheck: #CHECK
+@Metadata.allowExtensions: true
+@EndUserText.label: 'Projection View for ZRJAJ_SHOPCARTTP_000'
+define root view entity ZCJAJ_SHOPCARTTP_000
+  provider contract transactional_query
+  as projection on ZRJAJ_SHOPCARTTP_000
+{
+  key orderuuid,
+  orderid,
+  ordereditem,
+  price,
+  totalprice,
+  currency,
+  orderquantity,
+  deliverydate,
+  overallstatus,
+  notes,
+  locallastchangedat,
+  purchaserequisition,
+  prcreationdate
+  
+}

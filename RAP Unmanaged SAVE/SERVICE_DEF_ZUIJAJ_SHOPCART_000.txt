@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition forZCJAJ_SHOPCARTTP_000'
+define service ZUIJAJ_SHOPCART_000 {
+  expose ZCJAJ_SHOPCARTTP_000 as ShoppingCart;
+}

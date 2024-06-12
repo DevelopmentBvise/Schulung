@@ -1,0 +1,143 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ShoppingCart', 
+    typeNamePlural: 'ShoppingCarts'
+  }
+}
+annotate view ZCJAJ_SHOPCARTTP_000 with
+{
+  @UI.facet: [ {
+    id: 'idIdentification', 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'ShoppingCart', 
+    position: 10 
+  } ]
+  @UI.hidden: true
+  orderuuid;
+  
+  @UI.lineItem: [ {
+    position: 10 , 
+    importance: #MEDIUM,
+    label: 'OrderID'
+  } ]
+  @UI.identification: [ {
+    position: 10,
+    label: 'OrderID'
+  } ]
+  orderid;
+  
+  @UI.lineItem: [ {
+    position: 20 , 
+    importance: #MEDIUM,
+    label: 'OrderedItem'
+  } ]
+  @UI.identification: [ {
+    position: 20,
+     label: 'OrderedItem'
+  } ]
+  ordereditem;
+  
+  @UI.lineItem: [ {
+    position: 30 , 
+    importance: #MEDIUM,
+    label: 'Price'
+  } ]
+  @UI.identification: [ {
+    position: 30,
+    label: 'Price'
+  } ]
+  price;
+  
+  @UI.lineItem: [ {
+    position: 40 , 
+    importance: #MEDIUM,
+    label: 'TotalPrice'
+  } ]
+  @UI.identification: [ {
+    position: 40,
+    label: 'TotalPrice'
+  } ]
+  totalprice;
+  
+  @UI.lineItem: [ {
+    position: 50 , 
+    importance: #MEDIUM,
+    label: 'Currency'
+  } ]
+  @UI.identification: [ {
+    position: 50 ,
+    label: 'Currency'
+  } ]
+  currency;
+  
+  @UI.lineItem: [ {
+    position: 60 , 
+    importance: #MEDIUM,
+    label: 'OrderQuantity'
+  } ]
+  @UI.identification: [ {
+    position: 60 ,
+    label: 'OrderQuantity'
+  } ]
+  orderquantity;
+  
+  @UI.lineItem: [ {
+    position: 70 , 
+    importance: #MEDIUM,
+    label: 'DeliveryDate'
+  } ]
+  @UI.identification: [ {
+    position: 70 ,
+    label: 'DeliveryDate'
+  } ]
+  deliverydate;
+  
+  @UI.lineItem: [ {
+    position: 80 , 
+    importance: #MEDIUM,
+    label: 'OverallStatus'
+  } ]
+  @UI.identification: [ {
+    position: 80 ,
+    label: 'OverallStatus'
+  } ]
+  overallstatus;
+  
+  @UI.lineItem: [ {
+    position: 90 , 
+    importance: #MEDIUM,
+    label: 'Notes'
+  } ]
+  @UI.identification: [ {
+    position: 90 ,
+    label: 'Notes'
+  } ]
+  notes;
+  
+  @UI.hidden: true
+  locallastchangedat;
+  
+  @UI.lineItem: [ {
+    position: 100 , 
+    importance: #MEDIUM,
+    label: 'PurchaseRequisition'
+  },
+  { type: #FOR_ACTION, dataAction: 'createPurchaseRequisitionItem', label: 'Create purchase requisition item' } ] 
+  @UI.identification: [ {
+    position: 100 ,
+    label: 'PurchaseRequisition'
+  } ]
+  purchaserequisition;
+  
+  @UI.lineItem: [ {
+    position: 110 , 
+    importance: #MEDIUM,
+    label: 'PrCreationDate'
+  } ]
+  @UI.identification: [ {
+    position: 110 ,
+    label: 'PrCreationDate'
+  } ]
+  prcreationdate;
+}
