@@ -1,0 +1,178 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ShoppingCart', 
+    typeNamePlural: 'ShoppingCarts'
+  , title: {
+      type: #STANDARD,
+      label: 'ShoppingCart',
+      value: 'orderid'
+    }
+  },
+  presentationVariant: [ {
+    sortOrder: [ {
+      by: 'orderid',
+      direction: #DESC
+    } ],
+    visualizations: [ {
+      type: #AS_LINEITEM
+    } ]
+  } ]
+}
+annotate view ZC_SHOPCARTTP_000 with
+{
+  @UI.facet: [ {
+    id: 'idIdentification', 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'ShoppingCart', 
+    position: 10 
+  } ]
+  @UI.hidden: true
+  orderuuid;
+
+  @UI.lineItem: [ {
+    position: 20 ,
+    importance: #HIGH,
+    label: 'OrderID'
+  } ]
+  @UI.identification: [ {
+    position: 20 ,
+    label: 'OrderID'
+  } ]
+  @UI.selectionField: [ {
+    position: 20
+  } ]
+  orderid;
+  @Consumption.valueHelpDefinition: [{ entity: 
+                {name: 'ZI_PRODUCTS_000' , element: 'Item' },
+                additionalBinding: [{ localElement: 'price', element: 'Price', usage: #RESULT }
+                                    ,
+                                    { localElement: 'currency', element: 'Currency', usage: #RESULT }
+                                    ]
+                }]
+
+  @UI.lineItem: [ {
+    position: 30 ,
+    importance: #HIGH,
+    label: 'Ordered Item'
+  } ]
+  @UI.identification: [ {
+    position: 30 ,
+    label: 'Ordered Item'
+  } ]
+  @UI.selectionField: [ {
+    position: 30
+  } ]
+  ordereditem;
+
+  @UI.lineItem: [ {
+    position: 40 ,
+    importance: #HIGH,
+    label: 'Price'
+  } ]
+  @UI.identification: [ {
+    position: 40 ,
+    label: 'Price'
+  } ]
+  @UI.selectionField: [ {
+    position: 40
+  } ]
+  price;
+
+  @UI.lineItem: [ {
+    position: 45 ,
+    importance: #HIGH,
+    label: 'Total Price'
+  } ]
+  @UI.identification: [ {
+    position: 45 ,
+    label: 'Total Price'
+  } ]
+  @UI.selectionField: [ {
+    position: 50
+  } ]
+  totalprice;
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'I_Currency', element: 'Currency' } } ]
+  @UI.lineItem: [ {
+    position: 50 ,
+    importance: #HIGH,
+    label: 'currency'
+  } ]
+  @UI.identification: [ {
+    position: 50 ,
+    label: 'Currency'
+  } ]
+  @UI.selectionField: [ {
+    position: 60
+  } ]
+  currency;
+
+  @UI.lineItem: [ {
+    position: 55 ,
+    importance: #HIGH,
+    label: 'Ordered Quantity'
+  } ]
+  @UI.identification: [ {
+    position: 55 ,
+    label: 'Ordered Quantity'
+  } ]
+  @UI.selectionField: [ {
+    position: 65
+  } ]
+  orderquantity;
+
+  @UI.lineItem: [ {
+    position: 60 ,
+    importance: #HIGH,
+    label: 'Delivery Date'
+  } ]
+  @UI.identification: [ {
+    position: 60 ,
+    label: 'Delivery Date'
+  } ]
+  deliverydate;
+  @UI.lineItem: [ {
+    position: 65 ,
+    importance: #HIGH,
+    label: 'Overall Status'
+  } ]
+  @UI.identification: [ {
+    position: 65 ,
+    label: 'Overall Status'
+  } ]
+  overallstatus;
+@UI.lineItem: [ {
+    position: 70 ,
+    importance: #HIGH,
+    label: 'Notes'
+  } ]
+  @UI.identification: [ {
+    position: 70 ,
+    label: 'Notes'
+  } ]
+  notes;
+
+  @UI.hidden: true
+  locallastchangedat;
+
+  @UI.lineItem: [ {
+    position: 70 ,
+    label: 'Purchase requisition number',
+    importance: #HIGH
+  },
+
+  { type: #FOR_ACTION, dataAction: 'createPurchaseRequisitionItem', label: 'Create Purchase Requisition Item' } ]
+  @UI.identification: [ { position: 70, label: 'Purchase Requisition Number' } , { type: #FOR_ACTION, dataAction: 'createPurchaseRequisitionItem', label: 'Create Purchase Requisition Item' } ]
+  purchaserequisition;
+
+  @UI.lineItem: [ {
+    position: 75 ,
+    importance: #HIGH,
+    label: 'PR Creation Date'
+  } ]
+  @UI.identification: [ {
+    position: 75 ,
+    label: 'PR Creation Date'
+  } ]
+  prcreationdate;
+}

@@ -1,16 +1,16 @@
-@EndUserText.label : 'Shopping Cart Table'
+@EndUserText.label : 'Shopping cart table'
 @AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
 @AbapCatalog.tableCategory : #TRANSPARENT
 @AbapCatalog.deliveryClass : #A
 @AbapCatalog.dataMaintenance : #RESTRICTED
-define table zshopcart000 {
+define table zashopcart_000 {
   key client            : abap.clnt not null;
   key order_uuid        : sysuuid_x16 not null;
   order_id              : abap.numc(8) not null;
-  ordered_item          : abap.char(10) not null;
-  @Semantics.amount.currencyCode : 'zjajshopcart000.currency'
+  ordered_item          : abap.char(40) not null;
+  @Semantics.amount.currencyCode : 'zashopcart_000.currency'
   price                 : abap.curr(11,2);
-  @Semantics.amount.currencyCode : 'zjajshopcart000.currency'
+  @Semantics.amount.currencyCode : 'zashopcart_000.currency'
   total_price           : abap.curr(11,2);
   currency              : abap.cuky;
   order_quantity        : abap.numc(4);

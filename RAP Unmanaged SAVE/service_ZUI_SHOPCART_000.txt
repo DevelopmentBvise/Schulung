@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service definition forZC_SHOPCARTTP_000'
+define service ZUI_SHOPCART_000 {
+  expose ZC_SHOPCARTTP_000 as ShoppingCart;
+}
