@@ -1,0 +1,64 @@
+managed implementation in class ZBP_SHOPCARTTP_002 unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_SHOPCARTTP_002 alias ShoppingCart
+draft table ZDSHOPCART_002
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+with unmanaged save
+authorization master( global )
+{
+  field ( readonly )
+  OrderUUID,
+  CreatedAt,
+  CreatedBy,
+  LastChangedAt,
+  LastChangedBy,
+  LocalLastChangedAt,
+  PurchaseRequisition,
+  PrCreationDate,
+  DeliveryDate;
+
+  field ( numbering : managed )
+  OrderUUID;
+
+  create;
+  update(features: instance) ;
+  delete;
+
+  draft action(features: instance) Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare { validation checkOrderedQuantity; validation checkDeliveryDate; validation checkPurchaseRequisition;}
+    determination setInitialOrderValues on modify { create; }
+    determination calculateTotalPrice on modify { create; field Price; }
+  validation checkOrderedQuantity on save { create; field OrderQuantity; }
+  validation checkDeliveryDate on save { create; field DeliveryDate; }
+  validation checkPurchaseRequisition on save { field OverallStatus; }
+
+  action ( features : instance ) createPurchRqnBAPISave result [1] $self;
+
+
+  mapping for ZASHOPCART_002
+  {
+    OrderUUID = order_uuid;
+    OrderID = order_id;
+    OrderedItem = ordered_item;
+    Price = price;
+    TotalPrice = total_price;
+    Currency = currency;
+    OrderQuantity = order_quantity;
+    DeliveryDate = delivery_date;
+    OverallStatus = overall_status;
+    Notes = notes;
+    CreatedBy = created_by;
+    CreatedAt = created_at;
+    LastChangedBy = last_changed_by;
+    LastChangedAt = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+    PurchaseRequisition = purchase_requisition;
+    PrCreationDate = pr_creation_date;
+  }
+}

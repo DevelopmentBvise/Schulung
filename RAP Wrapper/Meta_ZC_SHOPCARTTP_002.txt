@@ -1,0 +1,122 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'ShoppingCart',
+    typeNamePlural: 'ShoppingCarts'
+  }
+}
+annotate view ZC_SHOPCARTTP_002 with
+{
+  @UI.facet: [ {
+    id: 'idIdentification',
+    type: #IDENTIFICATION_REFERENCE,
+    label: 'ShoppingCart',
+    position: 10
+  } ]
+  @UI.hidden: true
+  orderuuid;
+
+  @UI.lineItem: [ {
+    position: 10 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 10
+  } ]
+  orderid;
+
+  @UI.lineItem: [ {
+    position: 20 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 20
+  } ]
+  ordereditem;
+
+  @UI.lineItem: [ {
+    position: 30 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 30
+  } ]
+  price;
+
+  @UI.lineItem: [ {
+    position: 40 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 40
+  } ]
+  totalprice;
+
+  @UI.lineItem: [ {
+    position: 50 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 50
+  } ]
+  currency;
+
+  @UI.lineItem: [ {
+    position: 60 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 60
+  } ]
+  orderquantity;
+
+  @UI.lineItem: [ {
+    position: 70 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 70
+  } ]
+  deliverydate;
+
+  @UI.lineItem: [ {
+    position: 80 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 80
+  } ]
+  overallstatus;
+
+  @UI.lineItem: [ {
+    position: 90 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 90
+  } ]
+  notes;
+
+  @UI.hidden: true
+  locallastchangedat;
+
+  @UI.lineItem: [ {
+  position: 70 ,
+  label: 'Purchase requisition number',
+  importance: #HIGH
+  },
+
+  { type: #FOR_ACTION, dataAction: 'createPurchRqnBAPISave', label: 'Create PR via BAPI in SAVE' } ]
+  @UI.identification: [ { position: 70, label: 'Purchase Requisition Number' } , { type: #FOR_ACTION, dataAction: 'createPurchRqnBAPISave', label: 'Create PR via BAPI in SAVE' } ]
+  purchaserequisition;
+
+
+  @UI.lineItem: [ {
+    position: 110 ,
+    importance: #MEDIUM
+  } ]
+  @UI.identification: [ {
+    position: 110
+  } ]
+  prcreationdate;
+}
