@@ -1,0 +1,12 @@
+IF update IS NOT INITIAL.
+      DATA(creation_date) = cl_abap_context_info=>get_system_date( ).
+
+      LOOP AT update-shoppingcart INTO DATA(OnlineOrder1) WHERE %control-OverallStatus = if_abap_behv=>mk-on .
+        LOOP AT zbp_shopcarttp_000=>purchase_requisition_details INTO DATA(purchase_reqn_via_eml) WHERE pid IS NOT INITIAL AND order_uuid = onlineorder1-OrderUUID.
+          CONVERT KEY OF i_purchaserequisitiontp FROM purchase_reqn_via_eml-pid TO DATA(ls_pr_key1).
+          UPDATE zashopcart_000 SET purchase_requisition = @ls_pr_key1-PurchaseRequisition,
+          pr_creation_date = @creation_date
+          WHERE order_uuid = @purchase_reqn_via_eml-Order_UUID.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.

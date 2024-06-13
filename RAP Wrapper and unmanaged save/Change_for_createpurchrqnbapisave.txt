@@ -1,0 +1,78 @@
+DATA: purchase_requisitions      TYPE TABLE FOR CREATE I_PurchaserequisitionTP,
+          purchase_requisition       TYPE STRUCTURE FOR CREATE I_PurchaserequisitionTP,
+          purchase_requisition_items TYPE TABLE FOR CREATE i_purchaserequisitionTP\_PurchaseRequisitionItem,
+          purchase_requisition_item  TYPE STRUCTURE FOR CREATE i_purchaserequisitiontp\\purchaserequisition\_purchaserequisitionitem,
+          delivery_date              TYPE I_PurchaseReqnItemTP-DeliveryDate,
+          n                          TYPE i.
+    LOOP AT onlineorders INTO DATA(onlineorder) WHERE OverallStatus = c_overall_status-new .
+
+      delivery_date = cl_abap_context_info=>get_system_date( ) + 14.
+
+      n += 1.
+      "purchase requisition
+      DATA(cid) = onlineorder-OrderID && '_' && n.
+      purchase_requisition = VALUE #( %cid = cid
+      purchaserequisitiontype = 'NB' ) .
+      APPEND purchase_requisition TO purchase_requisitions.
+
+      "purchase requisition item
+      purchase_requisition_item = VALUE #(
+      %cid_ref = cid
+      %target = VALUE #( (
+      %cid = |My%ItemCID_{ n }|
+      plant = '1010' "Plant 01 (DE)
+      accountassignmentcategory = 'U' "unknown
+* PurchaseRequisitionItemText = . "retrieved automatically from maintained MaterialInfo
+      requestedquantity = '1'
+      purchaserequisitionprice = '100'
+      purreqnitemcurrency = 'EUR'
+      Material = 'D001'
+      materialgroup = 'A001'
+      purchasinggroup = '001'
+      purchasingorganization = '1010'
+      DeliveryDate = delivery_date "delivery_date "yyyy-mm-dd (at least 10 days)
+      CreatedByUser = OnlineOrder-CreatedBy
+      ) ) ).
+      APPEND purchase_requisition_item TO purchase_requisition_items.
+    ENDLOOP.
+    IF keys IS NOT INITIAL .
+      "purchase reqn
+      MODIFY ENTITIES OF i_purchaserequisitiontp
+      ENTITY purchaserequisition
+      CREATE FIELDS ( purchaserequisitiontype )
+      WITH purchase_requisitions
+      "purchase reqn item
+      CREATE BY \_purchaserequisitionitem
+      FIELDS ( plant
+* purchaserequisitionitemtext
+      accountassignmentcategory
+      requestedquantity
+      baseunit
+      purchaserequisitionprice
+      purreqnitemcurrency
+      Material
+      materialgroup
+      purchasinggroup
+      purchasingorganization
+      DeliveryDate
+
+      )
+      WITH purchase_requisition_items
+      REPORTED DATA(reported_create_pr)
+      MAPPED DATA(mapped_create_pr)
+      FAILED DATA(failed_create_pr).
+    ENDIF.
+
+    IF mapped_create_pr IS NOT INITIAL.
+      LOOP AT onlineorders INTO DATA(onlineorder1) WHERE OverallStatus = c_overall_status-new.
+        LOOP AT mapped_create_pr-purchaserequisition INTO DATA(purchaserequisition_details) .
+          IF onlineorder1-OrderID = substring_before( val = purchaserequisition_details-%cid sub = '_' ).
+
+            APPEND VALUE #( cid = purchaserequisition_details-%cid
+            pid = purchaserequisition_details-%pid
+            order_uuid = onlineorder1-OrderuuID ) TO zbp_shopcarttp_002=>purchase_requisition_details .
+            DELETE ADJACENT DUPLICATES FROM zbp_shopcarttp_002=>purchase_requisition_details COMPARING pid.
+          ENDIF.
+        ENDLOOP.
+      ENDLOOP.
+    ENDIF.
