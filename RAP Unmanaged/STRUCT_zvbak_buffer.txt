@@ -1,0 +1,7 @@
+@EndUserText.label : 'Transaktionspuffer ZVBAK'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_ANY
+define structure zvbak_buffer {
+  data    : include zvbak;
+  chngind : cdchngind;
+
+}

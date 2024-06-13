@@ -22,3 +22,4 @@ define root view entity ZC_MySalesOrder
       Currency,
       Status
 }
+
