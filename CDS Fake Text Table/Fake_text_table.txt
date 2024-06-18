@@ -1,0 +1,41 @@
+// Sample für Search Help in Pre-Filter Sets für Consumption Views für den Querry Viewer
+// Diese wird dann als foreign key association verbunden.
+// Ohne _Text wird nur der Verbundene Key angezeigt, aber nicht der Text ausgegeben.
+// Kann natürlich auch in der F4 Help Annotation genutzt werden.
+
+@AbapCatalog.sqlViewName: 'ZIUSERT'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Fake Text Table'
+@ObjectModel.dataCategory: #TEXT
+
+define view ZI_TOR_USER_DETAILST
+  as select from I_Userdetails
+{
+  key UserID,
+  @Semantics.language
+// Da wir keine Texttabelle haben und Namen nicht übersetzt werden,
+// müssen wir uns halt immer die System-Language zu nutze machen
+  key $session.system_language  as language, 
+  @Semantics.text: true
+  FullName
+}
+
+// Beispiel für Nutzung 
+//
+// @AbapCatalog.sqlViewName: 'ZIUSER'
+// @AbapCatalog.compiler.compareFilter: true
+// @AbapCatalog.preserveKey: true
+// @AccessControl.authorizationCheck: #NOT_REQUIRED
+// @EndUserText.label: 'User Table'
+// @Analytics.dataCategory: #DIMENSION
+//
+// define view ZI_TOR_USER_DETAILS
+//   as select from I_Userdetails
+//   association [0..*] to ZI_TOR_USER_DETAILST as _Text on $projection.UserID = _Text.UserID
+// {
+//   key UserID,
+//       /* Associations */
+//       _Text
+// }
