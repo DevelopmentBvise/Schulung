@@ -1,0 +1,82 @@
+"! @testing BDEF:ZI_PurchaseContractTP
+CLASS zcl_rap_testclass DEFINITION
+PUBLIC
+  FINAL
+  CREATE PUBLIC
+  FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
+
+  PUBLIC SECTION.
+    METHODS:
+      create_with_action FOR TESTING RAISING cx_static_check.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+    CLASS-DATA:
+      cds_test_environment TYPE REF TO if_cds_test_environment,
+      sql_test_environment TYPE REF TO if_osql_test_environment.
+    CLASS-METHODS:
+      class_setup,    " setup test double framework
+      class_teardown. " stop test doubles
+    METHODS:
+      setup,          " reset test doubles
+      teardown.       " rollback any changes
+ENDCLASS.
+
+
+
+CLASS zcl_rap_testclass IMPLEMENTATION.
+  METHOD create_with_action.
+    MODIFY ENTITIES OF I_PurchaseContractTP
+             ENTITY        PurchaseContract
+             CREATE FIELDS (
+                             CompanyCode
+                             PurchasingDocumentCategory
+                             PurchaseContractType
+                             PurchasingOrganization
+                             PurchasingGroup
+                             DocumentCurrency
+                             PaymentTerms
+                             CashDiscount1Days
+                             CashDiscount1Percent
+                             CashDiscount2Days
+                             CashDiscount2Percent
+                             Supplier
+                             ValidityStartDate
+                             ValidityEndDate )
+             WITH VALUE #( ( %cid                       = 'PC'
+                             CompanyCode                = '1010'
+                             PurchasingDocumentCategory = 'K'
+                             PurchaseContractType       = 'MK'
+                             PurchasingOrganization     = '1010'  "ZNML
+                             PurchasingGroup            = '001'
+                             DocumentCurrency           = 'EUR'
+                             Supplier                   = '0000100020' "'ASTRID2' )
+                             ValidityStartDate          = cl_abap_context_info=>get_system_date( )
+                             ValidityEndDate            = cl_abap_context_info=>get_system_date( ) + 2 ) )
+            MAPPED DATA(ls_mapped)
+            FAILED DATA(ls_failed)
+            REPORTED DATA(ls_reported).
+
+    " expect no failures and messages
+    cl_abap_unit_assert=>assert_initial( msg = 'failed'   act = ls_failed ).
+    cl_abap_unit_assert=>assert_initial( msg = 'reported' act = ls_reported ).
+
+  ENDMETHOD.
+  METHOD class_setup.
+    cds_test_environment = cl_cds_test_environment=>create_for_multiple_cds(
+                     i_for_entities = VALUE #(
+                       ( i_for_entity = 'I_PurchaseContractTP' ) ) ).
+  ENDMETHOD.
+
+  METHOD class_teardown.
+    cds_test_environment->destroy(  ).
+  ENDMETHOD.
+
+  METHOD setup.
+    cds_test_environment->clear_doubles(  ).
+  ENDMETHOD.
+
+  METHOD teardown.
+    ROLLBACK ENTITIES.
+  ENDMETHOD.
+
+ENDCLASS.
